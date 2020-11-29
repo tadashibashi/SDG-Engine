@@ -1,0 +1,20 @@
+<html>
+
+
+<canvas id="canvas"></canvas>
+<script type='text/javascript'>
+
+
+  var Module = {
+    canvas: (function() {
+      var canvas = document.getElementById('canvas');
+      return canvas;
+    })()
+  };
+
+  var script = document.createElement('script');
+  script.src = "../cmake-build-emscripten/SurvivalGame/SurvivalGame.js";
+  document.body.appendChild(script);
+</script>
+
+</html>
