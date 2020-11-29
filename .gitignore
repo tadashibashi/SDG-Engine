@@ -1,0 +1,12 @@
+# IDE Directories
+.vs/
+.idea/
+CMakeSettings.json
+
+# Build
+/[Bb]uild/
+
+# Vendor Libraries
+src/*
+!src/Engine/
+
