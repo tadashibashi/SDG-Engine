@@ -28,10 +28,11 @@ namespace SDG
     {
         // Initialization
         auto *entity = entities_.CheckOut();
-        if (factory)
-            factory(*entity);
 
         entity->Init();
+
+        if (factory)
+            factory(*entity);
 
         // Put into entity list
         active_.emplace_back(entity);
@@ -95,5 +96,12 @@ namespace SDG
             // Reset destroy flag.
             toDestroy_ = false;
         }
+    }
+
+    void EntityMgr::AddExistingEntity(Entity &e)
+    {
+        Entity &entity = CreateEntity(e.GetTag());
+        entity.Swap(e); // swap keeps pool id intact.
+        delete &e;
     }
 }

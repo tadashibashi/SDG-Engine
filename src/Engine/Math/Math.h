@@ -16,7 +16,7 @@ namespace SDG
     const float RAD_TO_DEG = 180.f / PI;
     const float DEG_TO_RAD = PI / 180.f;
 
-    class SDG_API Math
+    class Math
     {
     public:
         template <typename T> requires std::is_floating_point_v<T>
@@ -54,6 +54,12 @@ namespace SDG
             return std::cos(RadToDeg(degrees)) * length;
         }
 
+        /**
+         * Get the resulting Vector from an angle and length
+         * @param degrees
+         * @param length
+         * @return
+         */
         static Vector2 Trajectory(float degrees, float length)
         {
             return Vector2(TrajectoryX(degrees, length), TrajectoryY(degrees, length));

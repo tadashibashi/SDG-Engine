@@ -4,7 +4,6 @@
  * 
  * ===========================================================================*/
 #pragma once
-#include <Engine/Core.h>
 #include <string>
 #include <Engine/Graphics/Color.h>
 #include <any>
@@ -18,7 +17,7 @@ namespace tinyxml2
 
 namespace SDG::Tiled
 {
-    struct SDG_API Property
+    struct Property
     {
     private:
         std::string name;

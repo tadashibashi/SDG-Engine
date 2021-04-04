@@ -16,15 +16,33 @@ namespace SDG
     // Definition for TweenFunctions in namespace Tweens::functions
     typedef std::function<float(float, float, float, float)> TweenFunction;
 
-    class SDG_API Tween
+    class Tween
     {
     public:
         Tween(std::function<void(float)> setter, float start, float relVal,
-                float duration, const TweenFunction& func);
+                float duration, TweenFunction func);
         ~Tween() = default;
 
+        /**
+         * Sets the OnFinish callback
+         * @param cb Callback to set
+         * @return   this ref
+         */
         Tween& OnFinish(std::function<void()> cb);
+
+        /**
+         * Sets the OnStep callback
+         * @param cb  Callback to set
+         * @return    this ref
+         */
         Tween& OnStep(std::function<void(float)> cb);
+
+        /**
+         * Sets whether or not this Tween should have "yoyo" behavior.
+         * @param setYoyo true sets yoyo behavior, false turns it off
+         *                (default: false)
+         * @return    this ref
+         */
         Tween& SetYoyo(bool setYoyo);
 
         [[nodiscard]] bool isYoyo() const {return isYoyo_;}
@@ -37,7 +55,7 @@ namespace SDG
                      TweenFunction func);
         void Start() { isActive_ = true;}
         void Stop(bool resetTween = true);
-        void ChangeTargetSetter(const std::function<void(float)>& setter);
+        void ChangeTarget(const std::function<void(float)>& setter);
 
         /**
          * Stops the Tween and sets its currentTime to 0
@@ -48,7 +66,7 @@ namespace SDG
          * Stops the Tween, sets its currentTime to 0, and modifies essential Tween parameters
          */
         void Reset(float startVal, float endVal, float duration,
-                   TweenFunction& func);
+                   TweenFunction func);
 
         /**
          * Set the speed multiplier of the Tween (default: 1.f)

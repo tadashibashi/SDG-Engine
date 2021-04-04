@@ -26,7 +26,7 @@ namespace SDG
 
         void Callback(const SDL_QuitEvent &ev) override
         {
-            SDG_LOG("Received Quit Event at timestamp:", ev.timestamp);
+            SDG_LOG("Received Quit Event at timestamp: {0}", ev.timestamp);
             isRunning = false;
         }
 

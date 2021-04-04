@@ -10,7 +10,7 @@
 
 namespace SDG
 {
-    struct SDG_API Vertex
+    struct Vertex
     {
         Vertex() : position(), color(), uv() { }
         Vector2 position;

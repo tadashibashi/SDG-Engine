@@ -50,7 +50,6 @@ namespace SDG
         // Load success: commit changes
         *texture = Texture2D(textureID,
              static_cast<int>(width), static_cast<int>(height));
-        std::cout << "Loaded png image: " << filepath << ". Size: " << width << ", " << height << '\n';
         return true;
     }
 

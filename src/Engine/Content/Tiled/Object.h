@@ -1,6 +1,6 @@
 /* =============================================================================
  * Object
- * 
+ * Tiled Map Object
  * 
  * ===========================================================================*/
 #pragma once
@@ -27,6 +27,7 @@ namespace SDG::Tiled
         float rotation;
         std::map<std::string, Property> properties;
 
+        // Static method for parsing a Tiled Object from an XML element
         static Object Parse(tinyxml2::XMLElement *element, const std::string &rootPath);
         void Log();
     };

@@ -15,11 +15,10 @@ concept SceneType = requires { T(); } &&
 
 namespace SDG
 {
-
-    class SDG_API SceneStore {
+    class SceneCache {
     public:
-        SceneStore();
-        ~SceneStore();
+        SceneCache();
+        ~SceneCache();
 
         template <SceneType T>
         void RegisterScene()

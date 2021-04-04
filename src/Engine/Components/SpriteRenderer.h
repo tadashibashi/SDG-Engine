@@ -38,6 +38,7 @@ namespace SDG
         Vector2 position;
         Vector2 scale;
         Color color;
+        float rotation;
     private:
         Transform *transform_;
     };

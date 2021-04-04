@@ -13,6 +13,8 @@ namespace SDG
     class SDG_API Texture2D
     {
     public:
+        explicit Texture2D(unsigned int id) : id(id), size() {}
+
         Texture2D() : id(0), size() { }
         Texture2D(unsigned int id, int width, int height)
             : id(id), size(width, height) { }

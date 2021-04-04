@@ -3,6 +3,7 @@
  * 
  * 
  * ===========================================================================*/
+#if defined(_DEBUG)
 #include "Log.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
 namespace SDG
@@ -19,3 +20,4 @@ namespace SDG
         s_clientLogger->set_level(spdlog::level::trace);
     }
 }
+#endif

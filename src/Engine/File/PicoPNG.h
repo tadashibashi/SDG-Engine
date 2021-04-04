@@ -1,3 +1,6 @@
+//
+// Low level PNG decryption function
+//
 #pragma once
 #include <vector>
 

@@ -1,8 +1,3 @@
-/* =============================================================================
- * AtlasCache
- * 
- * 
- * ===========================================================================*/
 #include <Engine/Log.h>
 #include "AtlasCache.h"
 #include <cassert>
@@ -28,17 +23,16 @@ namespace SDG
     }
 
     // ========================================================================
-    // GetAtlas
+    // Load
     // ========================================================================
-    SpriteAtlas *AtlasCache::GetAtlas(const std::string &imagePath)
+    SpriteAtlas *AtlasCache::Load(const std::string &imagePath)
     {
-        if (cache_.contains(imagePath))
+        if (cache_.contains(imagePath))     // Cache already contains this path return it.
         {
-            return cache_[imagePath];
-
             ChangeCurrentAtlas(imagePath);
+            return cache_[imagePath];
         }
-        else
+        else                                // Cache does not contain this path, load it.
         {
             auto *atlas = new SpriteAtlas(content_);
 
@@ -48,6 +42,7 @@ namespace SDG
             SDG_CORE_LOG("Loading atlas:\nImagePath: {0}\nAtlasPath: {1}\nSpriteConfig: {2}", imagePath, atlasPath,
                 spriteConfigPath);
 
+            // Check for errors
             if (!atlas->Load(atlasPath, imagePath))
             {
                 delete atlas;
@@ -62,6 +57,7 @@ namespace SDG
                 return nullptr;
             }
 
+            // No errors, commit changes.
             cache_[imagePath] = atlas;
             ChangeCurrentAtlas(imagePath);
             return atlas;
@@ -71,7 +67,7 @@ namespace SDG
     // ========================================================================
     // Unload Atlas
     // ========================================================================
-    void AtlasCache::UnloadAtlas(const std::string& key)
+    void AtlasCache::Unload(const std::string& key)
     {
         if (cache_.contains(key))
         {
@@ -81,9 +77,9 @@ namespace SDG
         }
     }
 
-    void AtlasCache::UnloadAtlas(SpriteAtlas *atlas)
+    void AtlasCache::Unload(SpriteAtlas *atlas)
     {
-        UnloadAtlas(atlas->imagePath_);
+        Unload(atlas->imagePath_);
     }
 
     // ========================================================================
@@ -97,8 +93,8 @@ namespace SDG
         }
         else
         {
-            SDG_ERR("Attempted to change AtlasCache's current atlas with image path:", imagePath,
-                    ", but it coule not be found within cache.");
+            SDG_CORE_ERR("Attempted to change AtlasCache's current atlas with "
+                "image path: {1}, but it could not be found within cache", imagePath);
         }
     }
 

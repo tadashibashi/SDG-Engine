@@ -9,7 +9,9 @@
 #if defined (SDG_PLATFORM_WINDOWS)
     int main(int argc, char *argv[])
     {
-        ::SDG::Log::Init();
+#if defined(_DEBUG)
+        SDG::Log::Init();
+#endif
         auto game = SDG::CreateGame();
         game->Run();
         while(game->IsRunning())

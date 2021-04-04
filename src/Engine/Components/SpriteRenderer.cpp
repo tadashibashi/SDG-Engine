@@ -14,7 +14,7 @@ namespace SDG
             EntityComponent(true, true),
             imageIndex(0), imageSpeed(1.f), sprite(nullptr),
             scale(1.f, 1.f), position(), transform_(nullptr),
-            color(255, 255, 255, 255), depth(0)
+            color(255, 255, 255, 255), depth(0), rotation(0)
     {
     }
 
@@ -54,9 +54,10 @@ namespace SDG
 
         if (sprite) {
             const Frame &frame = sprite->At((int) imageIndex);
-
-            FRectangle pos(position.x + (((float) frame.ox - (float) frame.ow * sprite->GetOffset().x)) * scale.x,
-                           position.y + (((float) frame.oy - (float) frame.oh * sprite->GetOffset().y)) * scale.y,
+            Vector2 offset = Vector2((((float) frame.ox - (float) frame.ow * sprite->GetOffset().x) * scale.x),
+                                    (((float) frame.oy - (float) frame.oh * sprite->GetOffset().y)) * scale.y);
+            FRectangle pos(position.x + offset.x,
+                           position.y + offset.y,
                            (float) frame.w * scale.x,
                            (float) frame.h * scale.y);
             float w_scale(1.f / (float) frame.texture.GetWidth());
@@ -66,7 +67,7 @@ namespace SDG
                           h_scale * ((float) frame.texture.GetHeight() - (float) frame.h - (float) frame.y),
                           w_scale * (float) frame.w,
                           h_scale * (float) frame.h);
-            spriteBatch.DrawTexture(frame.texture, pos, uv, color, depth);
+            spriteBatch.DrawTexture(frame.texture, pos, uv, color, depth, offset, rotation);
         }
     }
 

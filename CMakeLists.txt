@@ -112,8 +112,8 @@ add_library(Engine STATIC
         src/Engine/Game.h
         src/Engine/Scenes/SceneRunner.cpp
         src/Engine/Scenes/SceneRunner.h
-        src/Engine/Scenes/SceneStore.cpp
-        src/Engine/Scenes/SceneStore.h
+        src/Engine/Scenes/SceneCache.cpp
+        src/Engine/Scenes/SceneCache.h
         src/Engine/Scenes/SceneMgr.cpp
         src/Engine/Scenes/SceneMgr.h
         src/Engine/Scenes/Scene.cpp
@@ -122,15 +122,43 @@ add_library(Engine STATIC
         src/Engine/Audio/MixEngine/MixEngine.cpp
         src/Engine/Math/TweenFunctions.cpp
         src/Engine/File/SwapEndian.h
-        src/Engine/GL.h src/Engine/Content/Tiled/TileMap.h src/Engine/Content/Tiled/TileSet.h src/Engine/Content/Tiled/TileLayer.h src/Engine/Content/Tiled/Tile.h src/Engine/Content/Tiled/Property.h src/Engine/Content/Tiled/Object.h src/Engine/Content/Tiled/ObjectLayer.h src/Engine/Content/Tiled/Layer.h src/Engine/Content/Tiled/TileMap.cpp src/Engine/Content/Tiled/Property.cpp src/Engine/Graphics/Color.cpp src/Engine/Content/Tiled/Object.cpp src/Engine/Core.h
-        src/Engine/EntryPoint.cpp src/Engine/Log.cpp src/Engine/Templates/Pool.h src/Engine/Math/Rand.cpp src/Engine/Math/Rand.h src/Engine/Graphics/Particles/Particle.h src/Engine/Graphics/Particles/ParticleEmitter.h src/Engine/Graphics/Particles/ParticleEmitter.cpp src/Engine/CollisionMgr.cpp src/Engine/CollisionMgr.h src/Engine/Components/Collider.h src/Engine/Components/Collider.cpp)
+        src/Engine/GL.h
+        src/Engine/Content/Tiled/TileMap.h
+        src/Engine/Content/Tiled/TileSet.h
+        src/Engine/Content/Tiled/TileLayer.h
+        src/Engine/Content/Tiled/Tile.h
+        src/Engine/Content/Tiled/Property.h
+        src/Engine/Content/Tiled/Object.h
+        src/Engine/Content/Tiled/ObjectLayer.h
+        src/Engine/Content/Tiled/Layer.h
+        src/Engine/Content/Tiled/TileMap.cpp
+        src/Engine/Content/Tiled/Property.cpp
+        src/Engine/Graphics/Color.cpp
+        src/Engine/Content/Tiled/Object.cpp
+        src/Engine/Core.h
+        src/Engine/EntryPoint.cpp
+        src/Engine/Log.cpp
+        src/Engine/Templates/Pool.h
+        src/Engine/Math/Rand.cpp
+        src/Engine/Math/Rand.h
+        src/Engine/Graphics/Particles/Particle.h
+        src/Engine/Graphics/Particles/ParticleEmitter.h
+        src/Engine/Graphics/Particles/ParticleEmitter.cpp
+        src/Engine/CollisionMgr.cpp
+        src/Engine/CollisionMgr.h
+        src/Engine/Components/Collider.h
+        src/Engine/Components/Collider.cpp
+        src/Engine/Scripting/VM.cpp
+        src/Engine/Scripting/VM.h
+        src/Engine/Graphics/SpriteFont.h
+        src/Engine/Graphics/SpriteFont.cpp)
 
 target_include_directories(Engine PUBLIC
     src/
     src/lua
     src/SDL/include
     src/tinyxml2
-    $ENV{SDL_TTF_BASE}/include
+    $ENV{SDL_TTF_BASE}
     C:/msvc/include/
     src/spdlog/include/
     ${AUDIO_INCLUDE_DIRS})

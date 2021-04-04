@@ -10,6 +10,9 @@
 #include <Engine/Math/Math.h>
 #include <Engine/Math/Tween.h>
 #include <Engine/Math/Rand.h>
+#include "Bullet.h"
+
+const int BULLET_TIMER_INIT_MAX = 250;
 
 using namespace SDG;
 
@@ -56,16 +59,37 @@ public:
             tween->Start();
         }
 
+        if (GetInput()->GetKeyboard()->IsKeyDown(Key::E))
+        {
+            if (bulletTimer_ == 0)
+            {
+                auto &e = GetCurrentScene()->CreateEntity(MakeBullet);
+                e.Components()->Get<Body>()->velocity = axis.Normalize() * 8.f;
+                e.Components()->Get<Transform>()->position = GetComponent<Transform>()->GetPosition() + Vector2(-2, -10.f);
+
+                bulletTimer_ = bulletTimerMax_;
+            }
+        }
+
+        if (bulletTimer_ > 0)
+        {
+            bulletTimer_ -= (int)GetTime()->DeltaTicks();
+        }
+        else
+        {
+            bulletTimer_ = 0;
+        }
+
+        // Set window title to mouse position
         auto mousePos = GetInput()->GetMouse()->GetPosition();
         mousePos = GetCurrentScene()->GetCamera()->ScreenToWorld(mousePos);
 
         GetGraphicsDeviceMgr()->GetCurrentDevice().SetWindowTitle(
                 (std::to_string(mousePos.x) + ", " + std::to_string(mousePos.y)).c_str());
 
-        tween->Update(GetTime()->DeltaTicks() * 0.001f);
+        tween->Update((float)GetTime()->DeltaTicks() * 0.001f);
         auto body = GetComponent<Body>();
         float speed = 5.f;
-        auto time = GetTime();
         auto input = GetInput();
         auto keys = input->GetKeyboard();
 
@@ -87,6 +111,10 @@ public:
         }
 
         spr->imageSpeed = (std::abs(xAxis) > 0 || std::abs(yAxis) > 0) ? body->velocity.Length() : 0;
+        spr->rotation = std::fmod(spr->rotation + 1, 360);
+        Vector2 tempAxis = Vector2(xAxis, yAxis);
+        if (tempAxis.Length() > 0)
+            axis = tempAxis;
     }
 
     void Draw() override
@@ -98,7 +126,24 @@ public:
     }
 
 private:
+    int bulletTimer_ = 0;
+    int bulletTimerMax_ = BULLET_TIMER_INIT_MAX;
     Transform *tf;
     SpriteRenderer *spr;
     Tween *tween;
+    Vector2 axis = Vector2(1.f, 0);
 };
+
+// Takes a pre-existing Entity and adds the component makeup of the Player
+void CreatePlayer(Entity &e)
+{
+    e.Components()->Add<SDG::Transform>(0, 0, 1.f, 1.f);
+    auto &sprRenderer = e.Components()->Add<SDG::SpriteRenderer>();
+    sprRenderer.SetSpriteByKey("guy-idle");
+    auto &body = e.Components()->Add<Body>();
+    body.show = true;
+    e.Components()->Add<Collider2D>();
+    e.Components()->Add<Player>();
+
+    e.SetTag("Player");
+}

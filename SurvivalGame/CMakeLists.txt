@@ -1,7 +1,7 @@
 project(SurvivalGame)
 
 add_executable(SurvivalGame
-        SurvivalGame.cpp Player.h Zombie.h GameScene.h)
+        SurvivalGame.cpp Player.h Zombie.h GameScene.h Bullet.h)
 
 target_link_libraries(SurvivalGame Engine)
 
@@ -14,7 +14,7 @@ if (NOT IS_SYMLINK "${CMAKE_CURRENT_BINARY_DIR}/assets")
     set(source "${CMAKE_CURRENT_SOURCE_DIR}/assets")
     set(destination "${CMAKE_CURRENT_BINARY_DIR}/assets")
     add_custom_command(
-            TARGET ${PROJECT_NAME} PRE_BUILD
+            TARGET SurvivalGame PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E create_symlink ${source} ${destination}
             DEPENDS ${destination}
             COMMENT "symbolic link resources folder from ${source} => ${destination}"

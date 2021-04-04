@@ -10,13 +10,13 @@
 namespace SDG
 {
     ContentMgr::ContentMgr():
-        textures_(new TextureCache), atlasCache_(new AtlasCache(*this))
+            textures_(new TextureCache), atlasses_(new AtlasCache(*this))
     {
     }
 
     ContentMgr::~ContentMgr()
     {
-        delete atlasCache_; // atlasses must be deleted before textures
+        delete atlasses_; // atlasses must be deleted before textures
         delete textures_;
     }
 
@@ -29,7 +29,7 @@ namespace SDG
     Sprite *ContentMgr::GetSprite(std::string key)
     {
         FormatString(key);
-        return atlasCache_->GetSprite(key);
+        return atlasses_->GetSprite(key);
     }
 
     void ContentMgr::FormatString(std::string &str)
@@ -42,9 +42,9 @@ namespace SDG
             str.erase(0, 1);
     }
 
-    SpriteAtlas *ContentMgr::LoadAtlas(std::string imageFilePath)
+    SpriteAtlas *ContentMgr::LoadAtlas(const std::string& imageFilePath)
     {
-        return atlasCache_->GetAtlas(imageFilePath);
+        return atlasses_->Load(imageFilePath);
     }
 
     void ContentMgr::UnloadTexture(std::string filepath)
@@ -55,14 +55,14 @@ namespace SDG
 
     void ContentMgr::ChangeCurrentAtlas(const std::string& atlasImagePath)
     {
-        atlasCache_->ChangeCurrentAtlas(atlasImagePath);
+        atlasses_->ChangeCurrentAtlas(atlasImagePath);
     }
 
     void ContentMgr::UnloadAll()
     {
-        delete atlasCache_;
+        delete atlasses_;
         delete textures_;
-        atlasCache_ = new AtlasCache(*this);
+        atlasses_ = new AtlasCache(*this);
         textures_ = new TextureCache;
     }
 

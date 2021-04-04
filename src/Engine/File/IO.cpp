@@ -56,14 +56,14 @@ bool SDG::IO::DecodePNG(const std::string &filepath,
 {
     std::vector<unsigned char> in;
     if (!ReadFile(filepath, &in)) {
-        SDG_ERR("IO::DecodePNG failed. Problem while reading "
+        SDG_CORE_ERR("IO::DecodePNG failed. Problem while reading "
             "file at \"" + filepath + "\"");
         return false;
     }
     unsigned long temp_w, temp_h;
 
     if (int result = (decodePNG(*buffer, temp_w, temp_h, in.data(), in.size()) != 0)) {
-        SDG_ERR("PicoPNG: Problem during decodePNG with error code ", result);
+        SDG_CORE_ERR("PicoPNG: Problem during decodePNG with error code ", result);
         return false;
     }
 

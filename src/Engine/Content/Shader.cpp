@@ -6,7 +6,7 @@
 #include "Shader.h"
 #include <Engine/File/IO.h>
 #include <Engine/Log.h>
-#include <iostream>
+
 namespace SDG
 {
     Shader::Shader()
@@ -96,7 +96,6 @@ namespace SDG
         glDeleteProgram(program);
         program = 0;
         attributeNumber = 0;
-
     }
 
     GLuint
@@ -136,8 +135,7 @@ namespace SDG
         {
             char resultMessage[512];
             glGetShaderInfoLog(shader, 512, nullptr, resultMessage);
-            SDG_ERR("Shader compilation error:", resultMessage);
-            std::cout << "Shader compilation error: " << resultMessage << '\n';
+            SDG_ERR("Shader compilation error: {0}", resultMessage);
             glDeleteShader(shader);
             return 0;
         }
@@ -178,8 +176,7 @@ namespace SDG
         GLuint vertex = CompileShaderString(vertexString.c_str(), GL_VERTEX_SHADER);
         if (!vertex)
         {
-            std::cout << "Vertex shader failed to compile\n";
-            SDG_ERR("Vertex Shader failed to compile.");
+            SDG_CORE_ERR("Vertex Shader failed to compile.");
             return false;
         }
 
@@ -203,6 +200,7 @@ namespace SDG
         glAttachShader(program, fragmentShader);
         glLinkProgram(program);
 
+        // Check for errors.
         GLint status;
         glGetProgramiv(program, GL_LINK_STATUS, &status);
         if (status == GL_FALSE)
@@ -220,6 +218,7 @@ namespace SDG
             return false;
         }
 
+        // Shaders are no longer needed once the program has compiled.
         glDetachShader(program, vertexShader);
         glDetachShader(program, fragmentShader);
         glDeleteShader(vertexShader);

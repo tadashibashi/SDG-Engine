@@ -24,21 +24,27 @@ namespace SDG
         Entity &CreateEntity(std::string tag);
         void DestroyEntity(Entity &entity);
 
+        std::vector<Entity *>::iterator begin() { return active_.begin(); }
+        std::vector<Entity *>::iterator end()   { return active_.end(); }
+
+        // Swaps entity on the free store into this entity manager. Relinquishes ownership.
+        void AddExistingEntity(Entity &e);
+
         void Update()
         {
             this->ProcessRemovals();
 
-            for (auto &entity : active_)
+            for (size_t i = 0, end = active_.size(); i != end; ++i)
             {
-                entity->Update();
+                active_[i]->Update();
             }
         }
 
         void PostUpdate()
         {
-            for (auto &entity : active_)
+            for (size_t i = 0, end = active_.size(); i != end; ++i)
             {
-                entity->PostUpdate();
+                active_[i]->PostUpdate();
             }
         }
 
@@ -52,6 +58,11 @@ namespace SDG
 
         void Close()
         {
+            for (auto &activeEntity: active_)
+            {
+                if (!activeEntity->IsPersistent())
+                    activeEntity->Close();
+            }
             entities_.ReturnAll();
             active_.clear();
             tagLists_.clear();

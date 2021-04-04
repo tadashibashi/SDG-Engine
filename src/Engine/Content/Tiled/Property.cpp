@@ -6,6 +6,7 @@
 #include "Property.h"
 #include <Engine/Log.h>
 #include <tinyxml2/tinyxml2.h>
+#include <stdexcept>
 
 namespace SDG::Tiled
 {

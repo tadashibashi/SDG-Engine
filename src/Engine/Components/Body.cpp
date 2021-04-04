@@ -12,7 +12,7 @@ namespace SDG
     void Body::Update()
     {
         float x = 0, y = 0;
-        if (useSpriteMask)
+        if (useSpriteMask && spr)
         {
             const Sprite *s;
             if ((s = spr->GetSprite()))

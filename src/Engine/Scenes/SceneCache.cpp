@@ -3,15 +3,15 @@
  * 
  * 
  * ===========================================================================*/
-#include "SceneStore.h"
+#include "SceneCache.h"
 
 namespace SDG
 {
-    SceneStore::SceneStore()
+    SceneCache::SceneCache()
     {
     }
 
-    SceneStore::~SceneStore()
+    SceneCache::~SceneCache()
     {
         for (auto &[k, v]: scenes_)
         {

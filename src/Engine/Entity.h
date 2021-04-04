@@ -6,6 +6,7 @@
 #pragma once
 #include <Engine/Core.h>
 #include <Engine/Components/ComponentList.h>
+
 #include <string>
 #include <Engine/Templates/Pool.h>
 
@@ -18,21 +19,17 @@ namespace SDG
         explicit Entity();
         ~Entity();
 
-        void Init()
-        {
-            toDestroy_ = false;
-            if (!components_)
-            {
-                components_ = new ComponentList;
-                components_->entity_ = this;
-            }
-
-        }
+        void Init();
 
         void Update()
         {
             components_->Update();
         }
+
+        // Effectively allows you to swap components and state with another
+        // Entity while each maintains its owned-by relationship to its
+        // respective Pool.
+        void Swap(Entity &other);
 
         void PostUpdate()
         {
@@ -44,15 +41,10 @@ namespace SDG
             components_->Draw();
         }
 
-        // Equivalent to destructor without destroying this object
+        // Resets the Entity. Equivalent to dtor without deleting this object from memory.
         void Close()
         {
-            if (components_)
-            {
-                components_->Close();
-                delete components_;
-                components_ = nullptr;
-            }
+            components_->Close();
         }
 
         void SetTag(std::string tag)
@@ -61,9 +53,17 @@ namespace SDG
         }
 
         [[nodiscard]] bool IsPersistent() const { return isPersistent_; }
-        void SetPersistent(bool isPersistent) { isPersistent_ = isPersistent; }
 
+        // Setting to true prevents this entity from being destroyed on Scene changes.
+        void SetPersistent(bool isPersistent)
+        {
+            isPersistent_ = isPersistent;
+        }
+
+        // Accesses this entity's ComponentList
         ComponentList *Components() { return components_; }
+
+        // Gets the entity's string tag. E.g. "Player", "Enemy", etc.
         [[nodiscard]] std::string GetTag() const { return tag_; }
     private:
         ComponentList *components_;
@@ -71,8 +71,4 @@ namespace SDG
         bool toDestroy_{false};
         bool isPersistent_{false};
     };
-
 }
-
-
-

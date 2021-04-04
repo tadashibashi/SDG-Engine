@@ -5,6 +5,8 @@ CMakeSettings.json
 
 # Build
 /[Bb]uild/
+out/
+cmake-build-*/
 
 # Vendor Libraries
 src/*

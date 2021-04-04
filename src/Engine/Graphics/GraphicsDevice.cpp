@@ -141,5 +141,6 @@ namespace SDG
         shader->AddAttribute("vertex_uv");
 
         defaultShader_ = shader;
+        shader->Use(); // Use for any initialization logic needing to access shader
     }
 }

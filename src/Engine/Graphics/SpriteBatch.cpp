@@ -4,8 +4,12 @@
  * 
  * ===========================================================================*/
 #include <algorithm>
-#include <glm/gtc/matrix_transform.hpp>
+#include <Engine/Math/Math.h>
 #include "SpriteBatch.h"
+#include <Engine/Log.h>
+
+#pragma warning(suppress : 4103)
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace SDG
 {
@@ -61,10 +65,9 @@ namespace SDG
 //        glBindVertexArray(vao);
         CreateVertexArray();
         for (auto &batch : batches) {
+            glUniform2iv(location, 1, (GLint *)batch.texture_.SizeData());
             glBindTexture(GL_TEXTURE_2D, batch.texture_.GetID());
             glDrawArrays(GL_TRIANGLES, batch.offset_, batch.vertex_count_);
-
-            glUniform2iv(location, 1, (GLint *)batch.texture_.SizeData());
         }
 
         DisableVertexArray();
@@ -78,21 +81,6 @@ namespace SDG
         glyph.texture = texture;
         glyph.depth = depth;
 
-//        glyph.topleft.color = color;
-//        glyph.topleft.position = Vector2(dest.x, dest.y + dest.h);
-//        glyph.topleft.uv = Vector2(source.x, source.y + source.h);
-//
-//        glyph.bottomleft.color = color;
-//        glyph.bottomleft.position = Vector2(dest.x, dest.y);
-//        glyph.bottomleft.uv = Vector2(source.x, source.y);
-//
-//        glyph.bottomright.color = color;
-//        glyph.bottomright.position = Vector2(dest.x + dest.w, dest.y);
-//        glyph.bottomright.uv = Vector2(source.x + source.w, source.y);
-//
-//        glyph.topright.color = color;
-//        glyph.topright.position = Vector2(dest.x + dest.w, dest.y + dest.h);
-//        glyph.topright.uv = Vector2(source.x + source.w, source.y + source.h);
         dest.x = std::round(dest.x);
         dest.w = std::round(dest.w);
         dest.y = std::round(dest.y);
@@ -118,6 +106,62 @@ namespace SDG
 
         glyph.topright.color = color;
         glyph.topright.position = Vector2(dest.x + dest.w, dest.y);
+        glyph.topright.uv = Vector2(source.x + source.w, source.y + source.h);
+
+        glyphs.emplace_back(glyph);
+    }
+
+    void SpriteBatch::DrawTexture(Texture2D texture, FRectangle dest, FRectangle source, Color color,
+                                  float depth, Vector2 anchor, float rotation)
+    {
+
+
+        Glyph glyph;
+        glyph.texture = texture;
+        glyph.depth = depth;
+
+        dest.x *= scale.x;
+        dest.y *= scale.y;
+        dest.w *= scale.x;
+        dest.h *= scale.y;
+        anchor.y *= scale.y;
+        anchor.x  *= -scale.x;
+
+        Vector2 tl(-anchor.x, -anchor.y);
+        Vector2 bl(-anchor.x, -dest.h-anchor.y);
+        Vector2 br(dest.w-anchor.x, -dest.h-anchor.y);
+        Vector2 tr(dest.w-anchor.x, -anchor.y);
+
+        float angle = Math::DegToRad(rotation);
+        //float angle = std::acos(right.x * rotation + right.y * rotation);
+
+        tl = Vector2::Rotate(tl, angle) + anchor;
+        bl = Vector2::Rotate(bl, angle) + anchor;
+        br = Vector2::Rotate(br, angle) + anchor;
+        tr = Vector2::Rotate(tr, angle) + anchor;
+
+
+        dest.y = -dest.y;
+
+        dest.x = std::round(dest.x);
+        dest.w = std::round(dest.w);
+        dest.y = std::round(dest.y);
+        dest.h = std::round(dest.h);
+
+        glyph.topleft.color = color;
+        glyph.topleft.position = Vector2(dest.x + tl.x, dest.y + tl.y);
+        glyph.topleft.uv = Vector2(source.x, source.y + source.h);
+
+        glyph.bottomleft.color = color;
+        glyph.bottomleft.position = Vector2(dest.x + bl.x, dest.y + bl.y);
+        glyph.bottomleft.uv = Vector2(source.x, source.y);
+
+        glyph.bottomright.color = color;
+        glyph.bottomright.position = Vector2(dest.x + br.x, dest.y + br.y);
+        glyph.bottomright.uv = Vector2(source.x + source.w, source.y);
+
+        glyph.topright.color = color;
+        glyph.topright.position = Vector2(dest.x + tr.x, dest.y + tr.y);
         glyph.topright.uv = Vector2(source.x + source.w, source.y + source.h);
 
         glyphs.emplace_back(glyph);

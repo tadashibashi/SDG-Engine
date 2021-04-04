@@ -1,17 +1,6 @@
-/* cocos2d for iPhone
- *
- * http://www.cocos2d-iphone.org
- *
- *
- * inflateMemory_ based on zlib example code
- *		http://www.zlib.net
- *
- * Some ideas were taken from:
- *		http://themanaworld.org/
- *		from the mapreader.cpp file
- *
+/*
+ * Modified version of ziputils from cocos2d for iPhone
  */
-
 #ifndef __CC_ZIP_UTILS_H
 #define __CC_ZIP_UTILS_H
 

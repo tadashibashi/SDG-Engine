@@ -1,11 +1,7 @@
-/* =============================================================================
- * Object
- * 
- * 
- * ===========================================================================*/
 #include "Object.h"
 #include <tinyxml2.h>
 #include <vector>
+#include <stdexcept>
 
 namespace SDG::Tiled
 {
@@ -32,21 +28,21 @@ namespace SDG::Tiled
             result = doc.LoadFile(path.c_str());
             if (result != tinyxml2::XML_SUCCESS)
             {
-                std::runtime_error("Failed to open Tiled Template file at: " +
+                throw std::runtime_error("Failed to open Tiled Template file at: " +
                     path);
             }
 
             tinyxml2::XMLElement *root = doc.RootElement();
             if (!root)
             {
-                std::runtime_error("Failed to get root element from Tiled template "
+                throw std::runtime_error("Failed to get root element from Tiled template "
                                    "file at path: " + path);
             }
 
             tinyxml2::XMLElement *objectElement = root->FirstChildElement("object");
             if (!objectElement)
             {
-                std::runtime_error("Failed to get object element from Tiled "
+                throw std::runtime_error("Failed to get object element from Tiled "
                                    "template at path: " + path);
             }
 

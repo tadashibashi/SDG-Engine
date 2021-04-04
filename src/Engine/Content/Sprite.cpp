@@ -17,3 +17,10 @@ void SDG::Sprite::Swap(Sprite &other)
     std::swap(mask, other.mask);
     std::swap(offset, other.offset);
 }
+
+SDG::Sprite::Sprite(std::vector<Frame> frames, std::vector<int> reel,
+                    SDG::Rectangle mask, SDG::Vector2 offset, float base_speed)
+        : frames(std::move(frames)), reel(std::move(reel)),
+          baseSpeed(base_speed), mask(mask), offset(offset)
+{
+}

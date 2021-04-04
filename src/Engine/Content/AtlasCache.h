@@ -1,7 +1,6 @@
 /* =============================================================================
  * AtlasCache
- * 
- * 
+ * Manager storage of SpriteAtlas objects. Owned by the main ContentMgr.
  * ===========================================================================*/
 #pragma once
 #include <Engine/Core.h>
@@ -16,7 +15,7 @@ namespace SDG
         explicit AtlasCache(ContentMgr &contentMgr);
         ~AtlasCache();
 
-        SpriteAtlas *GetAtlas(const std::string &imagePath);
+        SpriteAtlas *Load(const std::string &imagePath);
 
         // Gets a Sprite from the current SpriteAtlas.
         // Current SpriteAtlas is determined by either the latest successful call
@@ -24,9 +23,9 @@ namespace SDG
         Sprite *GetSprite(const std::string &key);
 
         // Will unload the atlas if it is in this cache.
-        void UnloadAtlas(const std::string& key);
+        void Unload(const std::string &key);
         // Will unload the atlas if it is in this cache.
-        void UnloadAtlas(SpriteAtlas *atlas);
+        void Unload(SpriteAtlas *atlas);
         // Changes the current atlas GetSprite will get from.
         // A successful call to GetAtlas will also change the current atlas.
         void ChangeCurrentAtlas(const std::string &imagePath);

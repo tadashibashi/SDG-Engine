@@ -16,12 +16,12 @@
 namespace SDG
 {
     // Data to render a sprite.
-    struct SDG_API Glyph {
+    struct Glyph {
         Glyph() : texture(), depth(0), topleft(), bottomleft(), topright(),
             bottomright() { }
+        Vertex topleft, bottomleft, topright, bottomright;
         Texture2D texture;
         float depth;
-        Vertex topleft, bottomleft, topright, bottomright;
     };
 
     enum class SortOrder {
@@ -41,7 +41,7 @@ namespace SDG
         Texture2D texture_;
     };
 
-    class SDG_API SpriteBatch {
+    class SpriteBatch {
     public:
         explicit SpriteBatch(GraphicsDevice *graphicsDevice);
         ~SpriteBatch();
@@ -49,7 +49,8 @@ namespace SDG
         void Begin(const glm::mat4 &matrix, SortOrder sort_order = SortOrder::Texture);
         // Does post-processing like depth-sorting.
         void End();
-        void DrawTexture(Texture2D texture, FRectangle dest, FRectangle source, Color color, float depth = 0);
+        void DrawTexture(Texture2D texture, FRectangle dest, FRectangle source, Color color, float depth);
+        void DrawTexture(Texture2D texture, FRectangle dest, FRectangle source, Color color, float depth, Vector2 anchor, float rotation);
         void DrawRectangle(FRectangle dest, Color color, float depth = 0);
         [[nodiscard]] Texture2D GetPixel() const { return pixel; }
         void RenderBatches();
@@ -68,7 +69,7 @@ namespace SDG
 
         void SortGlyphs();
         void CreateVertexArray();
-        void DisableVertexArray();
+        static void DisableVertexArray();
     };
 }
 

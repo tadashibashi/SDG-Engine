@@ -24,15 +24,15 @@ namespace SDG
             return entities_->CreateEntity(std::move(tag));
         }
 
-        Entity &CreateEntity(const std::function<void(Entity &)> &factory)
+        Entity &CreateEntity(const std::function<void(Entity &)> &factoryFunction)
         {
-            return entities_->CreateEntity(factory);
+            return entities_->CreateEntity(factoryFunction);
         }
 
-        void DestroyEntity(Entity &entity)
-        {
-            entities_->DestroyEntity(entity);
-        }
+        static void MakeEntityPersistent(Entity &entity);
+        static void RemoveEntityPersistence(Entity &entity);
+
+        void DestroyEntity(Entity &entity);
 
         // Scene creation/content loading/interpretation from files
         // Called right before scene start.

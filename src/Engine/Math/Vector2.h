@@ -3,10 +3,14 @@
 #include <type_traits>
 #include <cmath>
 
+#ifndef PI
+    const float PI = 3.1415926535897932;
+#endif
+
 namespace SDG
 {
     template <typename T> requires std::is_arithmetic_v<T>
-    class SDG_API Vec2_
+    class Vec2_
     {
     public:
         Vec2_() : x(0), y(0) { }
@@ -15,6 +19,7 @@ namespace SDG
         union
         {
             struct { T x, y; };
+            // Width and Height. Not to be confused with the xyzw paradigm.
             struct { T w, h; };
         };
 
@@ -24,6 +29,13 @@ namespace SDG
             float b = static_cast<float>(p1.y) - static_cast<float>(p2.y);
 
             return std::sqrt(a * a + b * b);
+        }
+
+        static Vec2_ Rotate(const Vec2_ &v, float angle)
+        {
+            //deg = deg * PI / 180.f;
+            return Vec2_(v.x * std::cos(angle) - v.y * std::sin(angle),
+                         v.x * std::sin(angle) + v.y * std::cos(angle));
         }
 
         // Distance from zero.

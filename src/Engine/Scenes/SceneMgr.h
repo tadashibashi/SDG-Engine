@@ -6,11 +6,12 @@
 #pragma once
 #include <Engine/Core.h>
 #include "SceneRunner.h"
-#include "SceneStore.h"
+#include "SceneCache.h"
 
 namespace SDG
 {
     class SDG_API SceneMgr {
+        friend class Scene;
     public:
         SceneMgr();
         virtual ~SceneMgr();
@@ -66,9 +67,13 @@ namespace SDG
             return runtime_.CurrentScene();
         }
 
+        [[nodiscard]]
+        std::vector<Entity *> GetPersistentEntities() const { return persistent_; }
+
     protected:
         SceneRunner runtime_;
-        SceneStore scenes_;
+        SceneCache scenes_;
+        std::vector<Entity *> persistent_;
     };
 
 }

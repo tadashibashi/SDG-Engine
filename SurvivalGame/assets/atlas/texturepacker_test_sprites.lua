@@ -34,6 +34,24 @@ sprites = {
             y = 1
         },
         mask = {
+            x = 12,
+            y = 20,
+            w = 10,
+            h = 10
+        },
+        base_speed = 4
+    },
+    {
+        key = "guy-hurt",
+        frames = {
+            "guy/5",
+        },
+        reel = { 1 },
+        offset = {
+            x = .5,
+            y = 1
+        },
+        mask = {
             x = 8,
             y = 16,
             w = 16,

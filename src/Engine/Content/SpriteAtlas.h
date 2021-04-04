@@ -11,7 +11,7 @@
 namespace SDG
 {
     class ContentMgr;
-    class SDG_API SpriteAtlas
+    class SpriteAtlas
     {
         friend class AtlasCache;
     public:

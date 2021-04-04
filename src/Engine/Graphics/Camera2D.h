@@ -1,10 +1,10 @@
 #pragma once
 #include "../Core.h"
-#include <glm/gtc/matrix_transform.hpp>
 #include <Engine/Math/Vector2.h>
 #include <Engine/Log.h>
 #include <Engine/Math/Rectangle.h>
 #include "GraphicsDeviceMgr.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace SDG
 {

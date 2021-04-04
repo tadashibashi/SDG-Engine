@@ -42,10 +42,6 @@ namespace SDG
             return false;
         }
         
-        // Notify Loaded
-        if (EngineConfig::SHOW_DEBUG_ASSET_LOADING)
-            cout << "Loaded TTF_Font from \"" << filepath << "\"\n";
-        
         // Set member variables
         m_filepath = filepath;
         m_ptSize = ptSize;
@@ -58,9 +54,6 @@ namespace SDG
         if (m_isLoaded) {
             TTF_CloseFont(m_font);
             m_font = nullptr;
-            
-            if (EngineConfig::SHOW_DEBUG_ASSET_LOADING)
-                cout << "Unloaded TTF_Font with filepath: \"" << m_filepath << "\"\n";
         }
     }
 }

@@ -5,7 +5,7 @@
 
 namespace SDG
 {
-    struct SDG_API Frame
+    struct Frame
     {
         int x, y, w, h,
             ox, oy, ow, oh;

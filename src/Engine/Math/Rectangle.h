@@ -22,31 +22,37 @@ namespace SDG
             this->h = h;
         }
 
+        [[nodiscard]]
         T GetArea() const noexcept
         {
             return w * h;
         }
 
+        [[nodiscard]]
         T GetLeft() const noexcept
         {
             return x;
         }
 
+        [[nodiscard]]
         T GetRight() const noexcept
         {
             return x + w;
         }
 
+        [[nodiscard]]
         T GetTop() const noexcept
         {
             return y;
         }
 
+        [[nodiscard]]
         T GetBottom() const noexcept
         {
             return y + h;
         }
 
+        [[nodiscard]]
         bool IsEmpty() const noexcept
         {
             return (*this == Rect_());
