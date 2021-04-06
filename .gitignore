@@ -3,7 +3,7 @@
 .idea/
 CMakeSettings.json
 
-# Build
+# Build Folders
 /[Bb]uild/
 out/
 cmake-build-*/
@@ -11,4 +11,5 @@ cmake-build-*/
 # Vendor Libraries
 src/*
 !src/Engine/
+!src/tinyxml2/
 
