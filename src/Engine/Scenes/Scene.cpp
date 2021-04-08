@@ -29,18 +29,20 @@ namespace SDG
         if (!camera_)
             camera_ = new Camera2D(*GetGraphicsDeviceMgr());
         if (!collisions_)
-            collisions_ = new CollisionMgr(Point(64, 64));
+            collisions_ = new CollisionMgr();
 
         // Grab persistent entities from the list
-        for (auto &e: GetSceneMgr()->persistent_)
+        for (Entity &e: GetSceneMgr()->persistent_)
         {
-            if (e->IsPersistent())
+            if (e.IsPersistent())
             {
-                entities_->AddExistingEntity(*e);
+                SDG_CORE_LOG("Adding a persistent entity with tag {0}", e.GetTag());
+                entities_->AddExistingEntity(e);
             }
         }
 
         GetSceneMgr()->persistent_.clear();
+        entities_->ProcessChanges();
 
         this->LoadContent();
         this->OnStart();
@@ -53,7 +55,7 @@ namespace SDG
         // Adds entities marked persistent to the SceneMgr persistent entity list.
         // The rest are cleaned up by EntityMgr. (EntityMgr will not clean up
         // entities marked persistent).
-        for (auto &e: *entities_)
+        for (Entity *e: *entities_)
         {
             if (e->IsPersistent())
                 MakeEntityPersistent(*e);
@@ -85,6 +87,6 @@ namespace SDG
     void Scene::MakeEntityPersistent(Entity &entity)
     {
         entity.SetPersistent(true);
-        GetSceneMgr()->persistent_.emplace_back(&entity);
+        GetSceneMgr()->persistent_.emplace_back().Swap(entity);
     }
 }

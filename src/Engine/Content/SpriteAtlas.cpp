@@ -41,6 +41,11 @@ bool SDG::SpriteAtlas::Load(const std::string &atlasPath, const std::string &ima
     {
         int index = v.as<int>();
         std::string key = k.as<std::string>();
+        sol::object sourceX, sourceY, sourceWidth, sourceHeight;
+        sourceX = rawFrames[index]["sourceX"];
+        sourceY = rawFrames[index]["sourceY"];
+        sourceWidth = rawFrames[index]["sourceWidth"];
+        sourceHeight = rawFrames[index]["sourceHeight"];
 
         Frame f
         {
@@ -48,10 +53,10 @@ bool SDG::SpriteAtlas::Load(const std::string &atlasPath, const std::string &ima
             rawFrames[index]["y"],
             rawFrames[index]["width"],
             rawFrames[index]["height"],
-            rawFrames[index]["sourceX"],
-            rawFrames[index]["sourceY"],
-            rawFrames[index]["sourceWidth"],
-            rawFrames[index]["sourceHeight"],
+            sourceX.valid() ? sourceX.as<int>() : 0,
+            sourceY.valid() ? sourceY.as<int>() : 0,
+            sourceWidth.valid() ? sourceWidth.as<int>() : rawFrames[index]["width"],
+            sourceHeight.valid() ? sourceHeight.as<int>() : rawFrames[index]["height"],
             texture
         };
 
@@ -156,7 +161,7 @@ bool SDG::SpriteAtlas::LoadSprites(const std::string &spriteConfigPath)
         for (auto &[k, v] : temp_sprite_map) {
             delete v;
         }
-        throw;
+        throw; // pass exception transparently
     }
 
     // Clean out any remaining sprites in the current map.

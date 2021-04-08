@@ -10,7 +10,7 @@
 #include <Engine/Content/Shader.h>
 #include "Color.h"
 
-class SDL_Window;
+struct SDL_Window;
 
 namespace SDG
 {

@@ -14,7 +14,7 @@ namespace SDG
     class Transform;
     class Sprite;
 
-    class SDG_API SpriteRenderer: public EntityComponent {
+    class SpriteRenderer: public EntityComponent {
     public:
         SpriteRenderer();
 

@@ -14,7 +14,7 @@
 
 namespace SDG
 {
-    class SDG_API Component
+    class Component
     {
         friend class ComponentList;
         enum : unsigned char

@@ -5,7 +5,6 @@
  * ===========================================================================*/
 #include "Body.h"
 #include "SpriteRenderer.h"
-#include <Engine/Math/Math.h>
 
 namespace SDG
 {
@@ -18,11 +17,11 @@ namespace SDG
             if ((s = spr->GetSprite()))
             {
                 Rectangle maskRect = s->GetMask();
-                size.w = maskRect.w;
-                size.h = maskRect.h;
+                size.w = (float)maskRect.w;
+                size.h = (float)maskRect.h;
 
-                x -= s->GetOffset().x * spr->GetCurrentFrame().ow - maskRect.x;
-                y -= s->GetOffset().y * spr->GetCurrentFrame().oh - maskRect.y;
+                x -= s->GetOffset().x * (float)spr->GetCurrentFrame().ow - maskRect.x;
+                y -= s->GetOffset().y * (float)spr->GetCurrentFrame().oh - maskRect.y;
             }
         }
 
@@ -31,7 +30,8 @@ namespace SDG
         position = Vector2(x, y) + tf->GetPosition();
     }
 
-    void Body::Draw() {
+    void Body::Draw()
+    {
         if (show)
         {
             FRectangle rect(position.x, position.y, size.w, size.h);
@@ -39,11 +39,10 @@ namespace SDG
         }
     }
 
-    void Body::Init() {
+    void Body::Init()
+    {
         tf = GetComponent<Transform>();
         spr = GetComponent<SpriteRenderer>();
         Update();
     }
-
-
 }

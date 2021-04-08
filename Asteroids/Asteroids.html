@@ -1,0 +1,17 @@
+<html lang="en">
+
+
+<canvas id="canvas"></canvas>
+<script type='text/javascript'>
+    var Module = {
+        canvas: (function() {
+            return document.getElementById('canvas');
+        })()
+    };
+
+    var script = document.createElement('script');
+    script.src = "./Asteroids.js";
+    document.body.appendChild(script);
+</script>
+
+</html>

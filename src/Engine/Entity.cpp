@@ -8,27 +8,29 @@
 
 namespace SDG
 {
-    Entity::Entity(): components_(new ComponentList), tag_()
+    Entity::Entity(): components_(nullptr), tag_(), toDestroy_(false), isPersistent_(false)
     {
-        components_->entity_ = this;
     }
 
     Entity::~Entity()
     {
-        this->Close();
-        delete components_;
+        if (!IsPersistent())
+        {
+            this->Close();
+
+            delete components_;
+        }
     }
 
     void Entity::Init()
     {
-        toDestroy_ = false;
-        isPersistent_ = false;
-        if (!components_) // just in case... I don't think we need this since constructor handles it.
+        if (!components_)
         {
             components_ = new ComponentList;
-            components_->entity_ = this;
         }
 
+        // Keep this outside to reset the componentlist's owner for persistent Entities
+        components_->entity_ = this;
     }
 
     void Entity::Swap(Entity &other)

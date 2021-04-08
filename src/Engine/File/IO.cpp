@@ -24,7 +24,7 @@ bool SDG::IO::ReadFile(const std::string &filepath, std::vector<unsigned char> *
 
     file_size -= file.tellg();    // disregard file header metadata
 
-    unsigned char *temp = new unsigned char[file_size];
+    unsigned char *temp = new unsigned char[(unsigned int)file_size];
 
     if (!file.read((char *)temp, file_size)) {
         file.close();

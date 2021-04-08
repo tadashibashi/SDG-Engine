@@ -39,6 +39,7 @@ namespace SDG
         void ProcessChanges();
         bool isRemoving_;
         bool isReplacing_;
+        bool isStarting_;
         Scene *newScene_;
     };
 

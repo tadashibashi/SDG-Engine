@@ -10,7 +10,7 @@
 #include "Scene.h"
 
 template <typename T>
-concept SceneType = requires { T(); } &&
+concept SceneType = std::is_default_constructible_v<T> &&
                     std::is_base_of_v<SDG::Scene, T>;
 
 namespace SDG

@@ -9,7 +9,7 @@ sprites = {
         },
         reel = { 1, 2, 3, 4 },   -- '1' indexing
         offset = {               -- normalized
-            x = 0.5,
+            x = .5,
             y = 1
         },
         mask = {

@@ -22,13 +22,13 @@ static int inflateMemoryWithHint(unsigned char *in, unsigned int inLength, unsig
     /* ret value */
     int err = Z_OK;
 
-    int bufferSize = outLenghtHint;
+    int bufferSize = (int)outLenghtHint;
     *out = (unsigned char *)malloc(bufferSize);
 
     z_stream d_stream; /* decompression stream */
-    d_stream.zalloc = (alloc_func)0;
-    d_stream.zfree = (free_func)0;
-    d_stream.opaque = (voidpf)0;
+    d_stream.zalloc = (alloc_func)nullptr;
+    d_stream.zfree = (free_func)nullptr;
+    d_stream.opaque = (voidpf)nullptr;
 
     d_stream.next_in = in;
     d_stream.avail_in = inLength;
@@ -51,6 +51,9 @@ static int inflateMemoryWithHint(unsigned char *in, unsigned int inLength, unsig
         case Z_DATA_ERROR: case Z_MEM_ERROR:
             inflateEnd(&d_stream);
             return err;
+        default:
+
+            break;
         }
 
         // not enough memory ?
@@ -84,7 +87,7 @@ int ccInflateMemoryWithHint(unsigned char *in, unsigned int inLength, unsigned c
     unsigned int outLength = 0;
     int err = inflateMemoryWithHint(in, inLength, out, &outLength, outLengthHint);
 
-    if (err != Z_OK || *out == NULL) {
+    if (err != Z_OK || *out == nullptr) {
         if (err == Z_MEM_ERROR)
             SDG_ERR("ZipUtils: Out of memory while decompressing map data!");
 
@@ -98,11 +101,11 @@ int ccInflateMemoryWithHint(unsigned char *in, unsigned int inLength, unsigned c
             SDG_ERR("ZipUtils: Unknown error while decompressing map data!");
 
         free(*out);
-        *out = NULL;
+        *out = nullptr;
         outLength = 0;
     }
 
-    return outLength;
+    return (int)outLength;
 }
 
 int ccInflateMemory(unsigned char *in, unsigned int inLength, unsigned char **out)
@@ -121,7 +124,7 @@ int ccInflateGZipFile(const char *path, unsigned char **out)
     }
 
     gzFile inFile = gzopen(path, "rb");
-    if (inFile == NULL) {
+    if (inFile == nullptr) {
         SDG_ERR(std::string("cocos2d: ZipUtils: error opening gzip file: ") + path);
         return -1;
     }
@@ -140,7 +143,7 @@ int ccInflateGZipFile(const char *path, unsigned char **out)
         len = gzread(inFile, *out + offset, bufferSize);
         if (len < 0) {
             free(*out);
-            *out = NULL;
+            *out = nullptr;
             SDG_ERR("cocos2d: ZipUtils: error in gzread");
             return -1;
         }
@@ -159,7 +162,7 @@ int ccInflateGZipFile(const char *path, unsigned char **out)
 
         if (!tmp) {
             free(*out);
-            *out = NULL;
+            *out = nullptr;
             SDG_ERR("cocos2d: ZipUtils: out of memory");
             return -1;
         }
@@ -168,9 +171,9 @@ int ccInflateGZipFile(const char *path, unsigned char **out)
     }
 
     if (gzclose(inFile) != Z_OK)
-        SDG_ERR("cocos2d: ZipUtils: gzclose failed");
+        SDG_CORE_ERR("cocos2d: ZipUtils: gzclose failed");
 
-    return offset;
+    return (int)offset;
 }
 
 typedef struct {
@@ -278,7 +281,7 @@ int ccInflateCCZFile(const char *path, std::vector<unsigned char> *out)
 
     if (!out || !(&*out))
     {
-        SDG_ERR("ccInflateCCZFile: invalid 'out' parameter");
+        SDG_CORE_ERR("ccInflateCCZFile: invalid 'out' parameter");
         return -1;
     }
 
@@ -287,15 +290,14 @@ int ccInflateCCZFile(const char *path, std::vector<unsigned char> *out)
     SDG::IO::ReadFile(path, &compressed);
 
     // IO length check.
-    uint32_t fileLen = compressed.size();
+    uint32_t fileLen = (uint32_t)compressed.size();
     if (fileLen < 0)
     {
-        SDG_ERR("Error loading CCZ compressed file");
+        SDG_CORE_ERR("Error loading CCZ compressed file");
         return -1;
     }
 
-    uint32_t len = 0;
-    uint32_t headerSize = 0;
+    uint32_t len, headerSize;
 
     if (compressed[0] == 'C' && compressed[1] == 'C' && compressed[2] == 'Z' && compressed[3] == '!')
     {
@@ -306,13 +308,13 @@ int ccInflateCCZFile(const char *path, std::vector<unsigned char> *out)
         uint16_t version = SDG::SwapEndian(header->version);
 
         if (version > 2) {
-            SDG_ERR("cocos2d: Unsupported CCZ header format");
+            SDG_CORE_ERR("cocos2d: Unsupported CCZ header format");
             return -1;
         }
 
         // verify compression format
         if (header->compression_type != CCZ_COMPRESSION_ZLIB) {
-            SDG_ERR("cocos2d: CCZ Unsupported compression method");
+            SDG_CORE_ERR("cocos2d: CCZ Unsupported compression method");
             return -1;
         }
 
@@ -328,20 +330,20 @@ int ccInflateCCZFile(const char *path, std::vector<unsigned char> *out)
         // verify header version
         uint16_t version = SDG::SwapEndian(header->version);
         if (version > 0) {
-            SDG_ERR("Unsupported CCZ header format");
+            SDG_CORE_ERR("Unsupported CCZ header format");
             return -1;
         }
 
         // verify compression format
         if (SDG::SwapEndian(header->compression_type) != 0) {
-            SDG_ERR("CCZ Unsupported compression method");
+            SDG_CORE_ERR("CCZ Unsupported compression method");
             return -1;
         }
 
         // decrypt
         headerSize = sizeof(CCPHeader);
         uint32_t *ints = (uint32_t *)(compressed.data() + 12);
-        int enclen = (fileLen - 12) / 4;
+        int enclen = ((int)fileLen - 12) / 4;
 
         caw_encdec(ints, enclen);
 
@@ -352,26 +354,26 @@ int ccInflateCCZFile(const char *path, std::vector<unsigned char> *out)
         uint32_t required = SDG::SwapEndian(header->checksum);
         if (calculated != required)
         {
-            SDG_ERR("Can't decrypt image file: Invalid decryption key");
+            SDG_CORE_ERR("Can't decrypt image file: Invalid decryption key");
             return -1;
         }
 #endif
     }
     else
     {
-        SDG_ERR("Invalid CCZ file");
+        SDG_CORE_ERR("Invalid CCZ file");
         return -1;
     }
 
     unsigned char *buf = new unsigned char[len];
 
     uLongf destlen = len;
-    uLongf source = (uLongf)compressed.data() + headerSize;
-    int ret = uncompress(buf, &destlen, (Bytef *)source, fileLen - headerSize);
+    uLongf source = (uLongf)(uintptr_t)compressed.data() + (uLongf)headerSize;
+    int ret = uncompress(buf, &destlen, (Bytef *)(uintptr_t)source, fileLen - headerSize);
 
     if (ret != Z_OK)
     {
-        SDG_ERR("Failed to uncompress data");
+        SDG_CORE_ERR("Failed to uncompress data");
         delete[] buf;
         return -1;
     }

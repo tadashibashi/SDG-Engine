@@ -24,7 +24,7 @@ namespace SDG::Tiled
     {
         c = (char)std::tolower(c);
         std::string digits = "0123456789abcdef";
-        return digits.find_first_of(c);
+        return (int)digits.find_first_of(c);
     }
 
     tinyxml2::XMLError TileMap::Load(const std::string &path)
@@ -262,7 +262,7 @@ namespace SDG::Tiled
     {
         std::vector<int> temp;
         // CSV encoding.
-        char *pTileDataCopy = strdup(data);
+        char *pTileDataCopy = _strdup(data);
         const char *pChar = std::strtok(pTileDataCopy, ",\n");
         while(pChar != nullptr)
         {

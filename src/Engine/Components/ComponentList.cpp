@@ -106,5 +106,13 @@ namespace SDG
         }
     }
 
+    void ComponentList::InitAll()
+    {
+        for (auto &[k, v] : map_)
+        {
+            v->Init();
+        }
+    }
+
 
 }

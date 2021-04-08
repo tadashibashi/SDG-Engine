@@ -4,8 +4,8 @@
  * 
  * ===========================================================================*/
 #pragma once
-#include <Engine/Core.h>
 #include <Engine/Components/Component.h>
+#include <Engine/Events/Delegate.h>
 #include <array>
 
 static const int MAX_TIMERS = 10;
@@ -13,7 +13,7 @@ static const int MAX_TIMERS = 10;
 namespace SDG
 {
 
-    class SDG_API Timer: public Component {
+    class Timer: public Component {
         struct Clock
         {
             bool isPaused{false};
@@ -72,9 +72,15 @@ namespace SDG
             timers_[index].Resume();
         }
 
-        void AddListener(int index, EventListener<int> *listener)
+        void AddListener(int index, void(*listener)(int))
         {
-            timers_[index].onFinish += listener;
+            timers_[index].onFinish.AddListener(listener);
+        }
+
+        template <typename T>
+        void AddListener(int index, T *obj, void(T::*listener)(int))
+        {
+            timers_[index].onFinish.AddListener(obj, listener);
         }
 
         void Set(int index, long ticks, bool pause = false)

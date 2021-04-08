@@ -21,9 +21,12 @@ namespace SDG
 
     void Collider2D::Draw()
     {
-        // Draw debug rectangle
-        GetSpriteBatch()->DrawRectangle((FRectangle)body_->GetBounds(),
-                                        Color(127, 255, 127, 50), -10000.f);
+        if (show)
+        {
+            // Draw debug rectangle
+            GetSpriteBatch()->DrawRectangle((FRectangle)body_->GetBounds(),
+                Color(127, 255, 127, 50), -10000.f);
+        }
     }
 
     bool Collider2D::CheckCollision(Collider2D *other)

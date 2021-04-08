@@ -12,7 +12,7 @@
 
 namespace SDG
 {
-    const float PI = 3.1415926535897932;
+    const float PI = 3.1415926535897932f;
     const float RAD_TO_DEG = 180.f / PI;
     const float DEG_TO_RAD = PI / 180.f;
 
@@ -45,13 +45,14 @@ namespace SDG
         template <typename T> requires std::is_floating_point_v<T>
         static float TrajectoryX(T degrees, T length)
         {
-            return std::sin(RadToDeg(degrees)) * length;
+            return std::cos(DegToRad(degrees)) * length;
         }
 
         template <typename T> requires std::is_arithmetic_v<T>
         static float TrajectoryY(T degrees, T length)
         {
-            return std::cos(RadToDeg(degrees)) * length;
+            // Negative value to match downward y coordinate system
+            return -(std::sin(DegToRad(degrees)) * length);
         }
 
         /**
@@ -104,7 +105,7 @@ namespace SDG
         template <typename T> requires std::is_arithmetic_v<T>
         static T Sign(T n)
         {
-            return n < 0 ? -1 : 1;
+            return (T)(n < 0 ? -1 : 1);
         }
 
         template <typename T> requires std::is_arithmetic_v<T>
@@ -117,6 +118,38 @@ namespace SDG
             }
 
             return total;
+        }
+
+        /**
+        * Modulo function that does not reflect across 0
+        */
+        template <typename T> requires std::is_arithmetic_v<T>
+        static float Mod(T x, T n)
+        {
+            return (T)fmodf((fmodf((float)x, (float)n) + n), (float)n);
+        }
+
+        /**
+         * Return a number that 'wraps around' to the opposite boundary when either boundary is exceeded.
+         * @param x Number to wrap.
+         * @param n1 First boundary; can be higher or lower than n2.
+         * @param n2 Second boundary; can be higher or lower than n1.
+         */
+        template <typename T> requires std::is_arithmetic_v<T>
+        static T Wrap(T x, T n1, T n2)
+        {
+            if (n1 == n2) { return n1; }
+
+            if (n1 < n2) {
+                return Mod(x - n1, n2 - n1) + n1;
+            } else {
+                return Mod(x - n2, n1 - n2) + n2;
+            }
+        }
+
+        static Vector2 Wrap(Vector2 val, Vector2 low, Vector2 high)
+        {
+            return Vector2(Wrap(val.x, low.x, high.x), Wrap(val.y, low.y, high.y));
         }
 
         static float PointDirection(float x1, float y1, float x2, float y2)
@@ -144,13 +177,13 @@ namespace SDG
         static int GetQuadrant(float x, float y)
         {
             if (x > 0 && y >= 0) {
-                return 0;
-            } else if (x <= 0 && y > 0) {
-                return 1;
-            } else if (x < 0 && y <= 0) {
-                return 2;
-            } else if (x >= 0 && y < 0) {
                 return 3;
+            } else if (x <= 0 && y > 0) {
+                return 2;
+            } else if (x < 0 && y <= 0) {
+                return 1;
+            } else if (x >= 0 && y < 0) {
+                return 0;
             }
             return -1;
         }

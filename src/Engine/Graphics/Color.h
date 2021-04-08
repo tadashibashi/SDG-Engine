@@ -23,6 +23,16 @@ namespace SDG
               GLubyte b, GLubyte a)
               : r(r), g(g), b(b), a(a) { }
         Color() : r(0), g(0), b(0), a(0) { }
+        explicit Color(int rgbaHex) : r(), g(), b(), a()
+        {
+            a = rgbaHex % 256;
+            rgbaHex /= 256;
+            b = rgbaHex % 256;
+            rgbaHex /= 256;
+            g = rgbaHex % 256;
+            rgbaHex /= 256;
+            r = rgbaHex % 256;
+        }
 
         GLubyte r, g, b, a;
 

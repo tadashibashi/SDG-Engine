@@ -22,24 +22,23 @@ namespace SDG
 
     void CollisionMgr::RegisterCollider(Collider2D *collider)
     {
-        colliders_.emplace_back(collider);
+        toAdd_.emplace_back(collider);
     }
 
     void CollisionMgr::UnregisterCollider(Collider2D *collider)
     {
-        for (auto it = colliders_.begin(), end = colliders_.end(); it != end; ++it)
-        {
-            if (*it == collider)
-            {
-                colliders_.erase(it);
-                return;
-            }
-        }
+        collider->toRemove_ = true;
+        toRemove_ = true;
     }
 
     void CollisionMgr::ProcessCollisions()
     {
+        ProcessRemovals();
+        ProcessAdditions();
+
         colls_.clear();
+
+        Point hashsize = (colliders_.size() > 256) ? hashSize_/2 : hashSize_;
         // Put entities in hash map
         for (auto &coll: colliders_)
         {
@@ -47,27 +46,22 @@ namespace SDG
 
             auto *body = coll->GetComponent<Body>();
             Rectangle bounds = body->GetBounds();
-            int x = bounds.x / hashSize_.x;
-            int y = bounds.y / hashSize_.y;
 
-            // center
-            colls_[ x ][ y ].emplace_back(coll);
-            // left
-            colls_[x-1][ y ].emplace_back(coll);
-            // right
-            colls_[x+1][ y ].emplace_back(coll);
-            // up
-            colls_[ x ][y-1].emplace_back(coll);
-            // down
-            colls_[ x ][y+1].emplace_back(coll);
-            // up-left
-            colls_[x-1][y-1].emplace_back(coll);
-            // up-right
-            colls_[x+1][y-1].emplace_back(coll);
-            // down-left
-            colls_[x-1][y+1].emplace_back(coll);
-            // down-right
-            colls_[x+1][y+1].emplace_back(coll);
+            if (hashsize.x <= 0) hashsize.x = 1;
+            if (hashsize.y <= 0) hashsize.y = 1;
+
+            int x = bounds.x / hashsize.x;
+            int y = bounds.y / hashsize.y;
+            int w = (bounds.x % hashsize.x + bounds.w) / hashsize.x;
+            int h = (bounds.y % hashsize.y + bounds.h) / hashsize.y;
+
+            for (int i = 0; i <= w; ++i)
+            {
+                for (int k = 0; k <= h; ++k)
+                {
+                    colls_[x + i][y + k].emplace_back(coll);
+                }
+            }
         }
 
         auto camBounds = GetCurrentScene()->GetCamera()->GetWorldBounds();
@@ -76,23 +70,22 @@ namespace SDG
         for (auto &[x, columns]: colls_)             // for every column of collider lists
         {
             // cull all collisions outside of camera view plus a half.
-            if ((float)x * hashSize_.x < camBounds.GetLeft() - camBounds.w * .5f || (float)x * hashSize_.x > camBounds.GetRight() + camBounds.w * .5f)
+            if ((float)x * hashsize.x < camBounds.GetLeft() - camBounds.w * .5f || (float)x * hashsize.x > camBounds.GetRight() + camBounds.w * .5f)
                 continue;
 
             for (auto &[y, colliderList]: columns)   // for every list of colliders
             {
                 // cull all collisions outside of camera view plus a half.
-                if ((float)y * hashSize_.y < camBounds.GetTop() - camBounds.h * .5f || (float)y * hashSize_.y > camBounds.GetBottom() + camBounds.h * .5f)
+                if ((float)y * hashsize.y < camBounds.GetTop() - camBounds.h * .5f || (float)y * hashsize.y > camBounds.GetBottom() + camBounds.h * .5f)
                     continue;
 
-                for (auto &thisColl: colliderList)     // for every collider in its list
+                for (Collider2D *thisColl: colliderList)     // for every collider in its list
                 {
-                    for (auto &otherColl: colliderList)
+                    for (Collider2D *otherColl: colliderList)
                     {
                         // Ensure entity is not checking collision with itself
                         if (thisColl != otherColl)
                         {
-
                             if (thisColl->CheckCollision(otherColl) && !thisColl->collided_.contains(otherColl))
                             {
                                 if (thisColl->callback_)
@@ -103,6 +96,29 @@ namespace SDG
                     }
                 }
             }
+        }
+    }
+
+    void CollisionMgr::ProcessRemovals()
+    {
+        if (toRemove_)
+        {
+            colliders_.erase(std::remove_if(colliders_.begin(), colliders_.end(),
+                                            [](Collider2D *coll) { return coll->toRemove_; }), colliders_.end());
+            toRemove_ = false;
+        }
+    }
+
+    void CollisionMgr::ProcessAdditions()
+    {
+        if (!toAdd_.empty())
+        {
+            for (Collider2D *coll : toAdd_)
+            {
+                colliders_.emplace_back(coll);
+            }
+
+            toAdd_.clear();
         }
     }
 

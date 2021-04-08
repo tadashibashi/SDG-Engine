@@ -45,7 +45,7 @@ public:
         GetCamera()->SetScale(4.f);
 
 
-        // tiled level parsing
+        // Tiled Level Parsing
         Tiled::TileMap map("assets/levels/level1.tmx");
         Texture2D tex = GetContent()->LoadTexture("assets/levels/" + map.tileSets[0].images[0].path, GL_NEAREST);
 

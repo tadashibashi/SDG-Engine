@@ -45,7 +45,7 @@ public:
 
     static void OnCollide(Entity *thiz, Entity *other)
     {
-        if (other->GetTag() == "Zombie")
+        if (thiz->GetTag() == "Player" && other->GetTag() == "Zombie")
         {
             SDG_LOG("You collided with a Zombie!");
             GetCurrentScene()->DestroyEntity(*other);
@@ -96,7 +96,7 @@ public:
         int xAxis = (keys->IsKeyDown(Key::Right)) - (keys->IsKeyDown(Key::Left));
         int yAxis = (keys->IsKeyDown(Key::Down)) - (keys->IsKeyDown(Key::Up));
 
-        body->speed = 1.5f;
+
         body->velocity = Math::Lerp(body->velocity, Vector2(xAxis, yAxis).Normalize() * speed, .2f);
         body->velocity = Math::Lerp(body->velocity, Vector2(), .025f);
 

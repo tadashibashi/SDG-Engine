@@ -7,6 +7,8 @@
 #include <Engine/Core.h>
 #include <string>
 
+struct SDL_QuitEvent;
+
 namespace SDG
 {
     class GraphicsDeviceMgr;
@@ -16,7 +18,8 @@ namespace SDG
     class SpriteBatch;
     class SceneMgr;
 
-    class SDG_API Game {
+
+    class Game {
     public:
         explicit Game(const std::string &configPath);
         Game(const std::string &title, int x, int y, int width, int height, unsigned int windowFlags = 0, unsigned long startingTime = 0);
@@ -47,6 +50,8 @@ namespace SDG
         virtual void PostDraw();
 
         void Quit();
+
+        void QuitHandler(const SDL_QuitEvent &ev);
 
     private:
         bool isRunning_;

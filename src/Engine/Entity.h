@@ -13,7 +13,7 @@
 namespace SDG
 {
     // Handle for a container of components
-    class SDG_API Entity : public IPoolable {
+    class Entity : public IPoolable {
         friend class EntityMgr;
     public:
         explicit Entity();
@@ -42,9 +42,19 @@ namespace SDG
         }
 
         // Resets the Entity. Equivalent to dtor without deleting this object from memory.
+        // NOTE: Do not call if the object is persistent, since it will unset its persistency.
         void Close()
         {
-            components_->Close();
+            RefreshEntity();
+        }
+
+        void RefreshEntity()
+        {
+            toDestroy_ = false;
+            isPersistent_ = false;
+
+            if (components_)
+                components_->Close();
         }
 
         void SetTag(std::string tag)
@@ -52,7 +62,8 @@ namespace SDG
             this->tag_ = std::move(tag);
         }
 
-        [[nodiscard]] bool IsPersistent() const { return isPersistent_; }
+        [[nodiscard]]
+        bool IsPersistent() const { return isPersistent_; }
 
         // Setting to true prevents this entity from being destroyed on Scene changes.
         void SetPersistent(bool isPersistent)
@@ -64,7 +75,8 @@ namespace SDG
         ComponentList *Components() { return components_; }
 
         // Gets the entity's string tag. E.g. "Player", "Enemy", etc.
-        [[nodiscard]] std::string GetTag() const { return tag_; }
+        [[nodiscard]]
+        std::string GetTag() const { return tag_; }
     private:
         ComponentList *components_;
         std::string tag_;

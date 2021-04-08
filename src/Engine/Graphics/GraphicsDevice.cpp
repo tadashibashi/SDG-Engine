@@ -92,18 +92,19 @@ namespace SDG
         SDL_GL_SwapWindow(window);
         defaultShader_->Unuse();
     }
-
+    
     Color GraphicsDevice::GetClearColor()
     {
         GLfloat vals[4];
         glGetFloatv(GL_COLOR_CLEAR_VALUE, vals);
-        return Color(vals[0] * 255.f, vals[1] * 255.f, vals[2] * 255.f, vals[3] * 255.f);
+        return Color((GLubyte)(vals[0] * 255.f), (GLubyte)(vals[1] * 255.f),
+                     (GLubyte)(vals[2] * 255.f), (GLubyte)(vals[3] * 255.f));
     }
 
     Point GraphicsDevice::GetBackBufferSize()
     {
         Point p;
-        SDL_GL_GetDrawableSize(window, &p.w, &p.h);
+        SDL_GetWindowSize(window, &p.w, &p.h);
         return p;
     }
 

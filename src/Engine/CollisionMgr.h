@@ -4,6 +4,9 @@
  * 
  * ===========================================================================*/
 #pragma once
+#ifndef SDG_COLLISIONMGR_H
+#define SDG_COLLISIONMGR_H
+
 #include <unordered_map>
 #include <vector>
 #include <Engine/Math/Vector2.h>
@@ -21,6 +24,8 @@ namespace SDG
         void RegisterCollider(Collider2D *collider);
         void UnregisterCollider(Collider2D *collider);
         void ProcessCollisions();
+        void ProcessRemovals();
+        void ProcessAdditions();
         [[nodiscard]] Point GetHashSize() const { return hashSize_; }
         void SetHashSize(Point size)
         {
@@ -31,8 +36,11 @@ namespace SDG
         std::unordered_map<int, std::unordered_map<int, std::vector<Collider2D *>>> colls_;
         std::vector<Collider2D *> colliders_;
         Point hashSize_;
+        std::vector<Collider2D *> toAdd_;
+        bool toRemove_{false};
     };
 }
 
+#endif
 
 

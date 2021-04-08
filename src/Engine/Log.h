@@ -3,6 +3,7 @@
 
 #if  defined(_DEBUG)
 #include <iostream>
+
 #include <string>
 #include <cassert>
 #include <utility>
@@ -141,7 +142,7 @@ static std::ostream &LogStream(std::ostream &os, bool log_endline,
         #define SDG_CORE_WARN __noop
         #define SDG_CORE_ERR __noop
         #define SDG_CORE_FATAL __noop
-    #elif defined(__EMSCRIPTEN)
+    #elif defined(__EMSCRIPTEN__)
         #define SDG_LOG(...)
         #define SDG_TRACE(...)
         #define SDG_WARN(...)

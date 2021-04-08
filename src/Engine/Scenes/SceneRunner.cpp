@@ -8,8 +8,8 @@
 
 namespace SDG
 {
-    SceneRunner::SceneRunner():
-        newScene_(nullptr), isRemoving_(false), isReplacing_(false)
+    SceneRunner::SceneRunner() :
+        newScene_(nullptr), isRemoving_(false), isReplacing_(false), isStarting_(false)
     {
     }
 
@@ -54,10 +54,12 @@ namespace SDG
                     current->OnPause();
                 }
             }
-
+            isStarting_ = false;
             scenes_.emplace(newScene_);
             newScene_->Init();
-            newScene_ = nullptr;
+
+            if (!isStarting_)
+                newScene_ = nullptr;
         }
     }
 
@@ -82,16 +84,9 @@ namespace SDG
 
     void SceneRunner::StartScene(Scene *scene, bool replaceCurrent)
     {
-        if (newScene_)
-        {
-            SDG_ERR("SceneRunner tried starting a new scene, but there is "
-                    "already one queued for next frame.");
-        }
-        else
-        {
-            newScene_ = scene;
-            isReplacing_ = replaceCurrent;
-        }
+        isStarting_ = true;
+        newScene_ = scene;
+        isReplacing_ = replaceCurrent;
     }
 
     void SceneRunner::StopCurrentScene()

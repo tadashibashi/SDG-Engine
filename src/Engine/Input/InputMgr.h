@@ -21,7 +21,6 @@ namespace SDG
         // Pipes every user input event to their corresponding listeners.
         void ProcessInput();
 
-        // Todo: Wrap each SDL event and sub-event type?
         Delegate<const SDL_WindowEvent &>WindowEvent;
         Delegate<const SDL_KeyboardEvent &>KeyboardEvent;
         Delegate<const SDL_TextEditingEvent &>TextEditingEvent;

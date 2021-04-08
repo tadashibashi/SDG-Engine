@@ -23,7 +23,12 @@ namespace SDG
     // ========================================================================
     void SpriteRenderer::Init()
     {
-        if (Owner()) transform_ = Owner()->Get<Transform>();
+        if (Owner()) {
+            transform_ = Owner()->Get<Transform>();
+            Update();
+            //transform_->OnPositionChange.AddListener()
+        }
+
     }
 
     // ========================================================================
@@ -35,7 +40,7 @@ namespace SDG
         {
             imageIndex = std::fmodf(
                     imageIndex + sprite->GetBaseSpeed() * (float)GetTime()->DeltaTicks() * 0.001f * imageSpeed,
-                    sprite->GetLength());
+                    (float)sprite->GetLength());
         }
 
         if (transform_)
@@ -67,7 +72,11 @@ namespace SDG
                           h_scale * ((float) frame.texture.GetHeight() - (float) frame.h - (float) frame.y),
                           w_scale * (float) frame.w,
                           h_scale * (float) frame.h);
-            spriteBatch.DrawTexture(frame.texture, pos, uv, color, depth, offset, rotation);
+            //SDG_LOG("{0}", offset.ToString().c_str());
+            if (rotation != 0)
+                spriteBatch.DrawTexture(frame.texture, pos, uv, color, depth, offset, rotation);
+            else
+                spriteBatch.DrawTexture(frame.texture, pos, uv, color, depth);
         }
     }
 

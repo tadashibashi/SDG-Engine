@@ -11,7 +11,7 @@
 
 namespace SDG
 {
-    class SDG_API Transform: public Component
+    class Transform: public Component
     {
     public:
         Transform(float x, float y, float scaleX, float scaleY):
@@ -26,6 +26,31 @@ namespace SDG
         void PostUpdate() override
         {
             setProjectedPos_ = false;
+        }
+
+        void SetPositionLocal(Vector2 position)
+        {
+            if (setProjectedPos_)
+            {
+                projectedPos_ -= this->position;
+                this->position = position;
+                projectedPos_ += position;
+            }
+            else
+            {
+                this->position = position;
+                setProjectedPos_ = false;
+            }
+        }
+
+        void SetPositionFinal(Vector2 finalPos)
+        {
+            SetPositionLocal(finalPos - GetPosition());
+        }
+
+        Vector2 GetPositionLocal() const
+        {
+            return this->position;
         }
 
         Vector2 GetPosition() const

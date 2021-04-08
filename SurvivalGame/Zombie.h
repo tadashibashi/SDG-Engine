@@ -9,6 +9,7 @@
 #include <Engine/Components/Transform.h>
 #include <Engine/Components/Collider.h>
 #include <Engine/Math/Rand.h>
+#include <Engine/Math/Math.h>
 
 namespace SDG
 {
@@ -44,14 +45,17 @@ namespace SDG
 
         void Update() override
         {
+            auto mytf = GetComponent<Transform>();
             if (Rand::Next() < .5)
             {
+
                 if (player_)
                 {
                     auto tf = player_->Components()->Get<Transform>();
-                    auto mytf = GetComponent<Transform>();
 
-                    mytf->position += (tf->GetPosition() - mytf->GetPosition()).Normalize();
+                    auto res = (tf->GetPosition() - mytf->GetPosition()).Normalize();
+                    direction = Math::PointDirection(mytf->position.x, mytf->position.y, tf->position.x, tf->position.y);
+                    mytf->position += res;
                 }
                 else
                 {
@@ -59,11 +63,26 @@ namespace SDG
                 }
             }
             auto spr = this->GetComponent<SpriteRenderer>();
-            spr->rotation = std::fmod(spr->rotation + 1, 360);
+
+            if (direction > 90 && direction < 270)
+            {
+                spr->rotation = Math::Mod<float>((direction + 180), 360);
+                targetScalex = -1;
+            }
+            else
+            {
+                spr->rotation = direction;
+                targetScalex = 1;
+            }
+
+            mytf->scale = Math::Lerp(mytf->scale, Vector2(targetScalex, 1), .1f);
+
         }
 
     private:
         Entity *player_;
         float rotation{};
+        float direction;
+        float targetScalex{};
     };
 }

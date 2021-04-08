@@ -21,7 +21,7 @@ namespace SDG
     class SceneMgr;
     class Scene;
 
-    class SDG_API EntityComponent: public Component {
+    class EntityComponent: public Component {
     public:
         EntityComponent(bool isUpdatable, bool isDrawable);
         static void Provide(SceneMgr *sceneMgr) { sceneMgr_ = sceneMgr; }

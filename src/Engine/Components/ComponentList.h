@@ -48,6 +48,8 @@ namespace SDG
             return *component;
         }
 
+        void InitAll();
+
         // Get a component from this container, or nullptr if there are none.
         template <typename T> requires std::is_base_of_v<Component, T>
         [[nodiscard]] T *Get() const

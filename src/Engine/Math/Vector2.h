@@ -2,10 +2,8 @@
 #include <Engine/Core.h>
 #include <type_traits>
 #include <cmath>
-
-#ifndef PI
-    const float PI = 3.1415926535897932;
-#endif
+#include <sstream>
+#include <string>
 
 namespace SDG
 {
@@ -23,6 +21,7 @@ namespace SDG
             struct { T w, h; };
         };
 
+        // Gets the distance between two vectors
         static float Distance(const Vec2_ &p1, const Vec2_ &p2)
         {
             float a = static_cast<float>(p1.x) - static_cast<float>(p2.x);
@@ -31,23 +30,24 @@ namespace SDG
             return std::sqrt(a * a + b * b);
         }
 
+        // Returns a rotated point around {0, 0} anchor
         static Vec2_ Rotate(const Vec2_ &v, float angle)
         {
-            //deg = deg * PI / 180.f;
-            return Vec2_(v.x * std::cos(angle) - v.y * std::sin(angle),
-                         v.x * std::sin(angle) + v.y * std::cos(angle));
+            return Vec2_((T)(v.x * std::cos(angle) - v.y * std::sin(angle)),
+                         (T)(v.x * std::sin(angle) + v.y * std::cos(angle)));
         }
 
         // Distance from zero.
-        float Length()
+        float Length() const
         {
-            return std::sqrt(x * x + y * y);
+            return std::sqrt((float)(x * x + y * y));
         }
 
-        // Only applicable if template type is a decimal/floating-point type. 
+        // Scales x and y so that it totals 1 in length
+        // (Only applicable on floating-point types)
         Vec2_ &Normalize()
         {
-            float length = this->Length();
+            T length = (T)this->Length();
             if (length != 0)
             {
                 x /= length;
@@ -56,6 +56,15 @@ namespace SDG
             return *this;
         }
 
+        // Formats Vec2_ as string: "{x, y}"
+        std::string ToString() const
+        {
+            std::ostringstream str;
+            str << *this;
+            return str.str();
+        }
+
+        // Math operators
         Vec2_ &operator+=(const Vec2_ &other)
         {
             x += other.x;
@@ -124,11 +133,18 @@ namespace SDG
     };
 
     template <typename T>
+    std::ostream &operator<<(std::ostream &out, const Vec2_<T> &v)
+    {
+        out << "{" << std::to_string(v.x) << ", " << std::to_string(v.y) << "}";
+        return out;
+    }
+
+    template <typename T>
     Vec2_<T> operator+(Vec2_<T> a, Vec2_<T> b)
     {
         Vec2_<T> temp(a);
         return temp += b;
-    }    
+    }
     
     template <typename T>
     Vec2_<T> operator-(const Vec2_<T> a, const Vec2_<T> b)

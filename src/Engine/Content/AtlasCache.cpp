@@ -36,8 +36,9 @@ namespace SDG
         {
             auto *atlas = new SpriteAtlas(content_);
 
-            std::string atlasPath = imagePath.substr(0, imagePath.find_last_of('.')) + ".lua";
-            std::string spriteConfigPath = imagePath.substr(0, imagePath.find_last_of('.')) + "_sprites.lua";
+            std::string atlasPath = imagePath.substr(0, imagePath.find_first_of('.')) + ".lua";
+
+            std::string spriteConfigPath = imagePath.substr(0, imagePath.find_first_of('.')) + "_sprites.lua";
 
             SDG_CORE_LOG("Loading atlas:\nImagePath: {0}\nAtlasPath: {1}\nSpriteConfig: {2}", imagePath, atlasPath,
                 spriteConfigPath);

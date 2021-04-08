@@ -15,13 +15,14 @@
 
 namespace SDG
 {
-    class SDG_API EntityMgr {
+    // Houses and manages a pool of Entities
+    class EntityMgr {
     public:
         explicit EntityMgr(size_t initPoolSize = 127u);
         ~EntityMgr();
 
         Entity &CreateEntity(const std::function<void(Entity &)>&factory);
-        Entity &CreateEntity(std::string tag);
+        Entity &CreateEntity(std::string tag = "");
         void DestroyEntity(Entity &entity);
 
         std::vector<Entity *>::iterator begin() { return active_.begin(); }
@@ -30,21 +31,27 @@ namespace SDG
         // Swaps entity on the free store into this entity manager. Relinquishes ownership.
         void AddExistingEntity(Entity &e);
 
-        void Update()
+        void ProcessChanges()
         {
             this->ProcessRemovals();
+            this->ProcessCreations();
+        }
 
-            for (size_t i = 0, end = active_.size(); i != end; ++i)
+        void Update()
+        {
+            ProcessChanges();
+
+            for (Entity *entity : active_)
             {
-                active_[i]->Update();
+                entity->Update();
             }
         }
 
         void PostUpdate()
         {
-            for (size_t i = 0, end = active_.size(); i != end; ++i)
+            for (Entity *entity : active_)
             {
-                active_[i]->PostUpdate();
+                entity->PostUpdate();
             }
         }
 
@@ -58,11 +65,15 @@ namespace SDG
 
         void Close()
         {
+            this->ProcessRemovals();
+            this->ProcessCreations();
+
             for (auto &activeEntity: active_)
             {
                 if (!activeEntity->IsPersistent())
                     activeEntity->Close();
             }
+
             entities_.ReturnAll();
             active_.clear();
             tagLists_.clear();
@@ -88,11 +99,13 @@ namespace SDG
     private:
         Pool<Entity> entities_;
         std::vector<Entity *> active_;
+        std::vector<Entity *> toAdd_;
         mutable std::map<std::string, std::vector<Entity *>> tagLists_;
         bool toDestroy_{false};
 
         // Destroys entities marked for destruction
         void ProcessRemovals();
+        void ProcessCreations();
     };
 }
 

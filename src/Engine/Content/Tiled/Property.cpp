@@ -79,7 +79,7 @@ namespace SDG::Tiled
     {
         if (type == Type::File)
         {
-            *num = std::any_cast<int>(value);
+            *num = (float)std::any_cast<int>(value);
             return true;
         }
         else

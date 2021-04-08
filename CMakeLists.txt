@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.14)
 project(Engine)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -10,6 +10,7 @@ add_subdirectory(src/tinyxml2)
 #add_library(mojoAL STATIC src/mojoAL/mojoal.c)
 #target_include_directories(mojoAL PUBLIC src/mojoAL $ENV{SDLBASE}/include)
 
+# Get Architecture Bit Size
 if (CMAKE_SIZEOF_VOID_P MATCHES "4")
     set(ARCH "32bit")
 else()
@@ -51,10 +52,8 @@ add_library(Engine STATIC
         src/Engine/Graphics/GraphicsDevice.cpp
         src/Engine/Graphics/GraphicsDeviceMgr.cpp
         src/Engine/Input/InputMgr.cpp
-        src/Engine/Events/EventListener.h
-        src/Engine/Events/Delegate.h
-        "src/Engine/Content/Shader.cpp"
-        "src/Engine/Content/Shader.h"
+        src/Engine/Content/Shader.cpp
+        src/Engine/Content/Shader.h
         src/Engine/Log.h
         src/Engine/File/IO.cpp
         src/Engine/File/ZipUtils.cpp
@@ -68,19 +67,19 @@ add_library(Engine STATIC
         src/Engine/Content/ContentMgr.h 
         src/Engine/Content/TextureCache.cpp 
         src/Engine/Content/TextureCache.h 
-        "src/Engine/Content/Texture2D.h" 
+        src/Engine/Content/Texture2D.h
         src/Engine/Graphics/Color.h 
         src/Engine/Graphics/Vertex.h 
-        "src/Engine/Graphics/Camera2D.h" 
-        "src/Engine/Graphics/Camera2D.cpp" 
-        "src/Engine/Input/Mouse.h" 
-        "src/Engine/Input/Mouse.cpp" 
-        "src/Engine/Input/Button.h" 
-        "src/Engine/Content/SpriteAtlas.h" 
-        "src/Engine/Content/SpriteAtlas.cpp" 
-        "src/Engine/Content/Frame.h"
-        "src/Engine/Content/Sprite.h"
-        "src/Engine/Content/Sprite.cpp"
+        src/Engine/Graphics/Camera2D.h
+        src/Engine/Graphics/Camera2D.cpp
+        src/Engine/Input/Mouse.h
+        src/Engine/Input/Mouse.cpp
+        src/Engine/Input/Button.h
+        src/Engine/Content/SpriteAtlas.h
+        src/Engine/Content/SpriteAtlas.cpp
+        src/Engine/Content/Frame.h
+        src/Engine/Content/Sprite.h
+        src/Engine/Content/Sprite.cpp
         src/Engine/Components/SpriteRenderer.cpp
         src/Engine/Components/SpriteRenderer.h
         src/Engine/Time/GameTime.cpp
@@ -151,7 +150,8 @@ add_library(Engine STATIC
         src/Engine/Scripting/VM.cpp
         src/Engine/Scripting/VM.h
         src/Engine/Graphics/SpriteFont.h
-        src/Engine/Graphics/SpriteFont.cpp)
+        src/Engine/Graphics/SpriteFont.cpp
+        src/Engine/Events/Delegate.h src/Engine/States/StateMachine.h src/Engine/States/StateMachineState.h)
 
 target_include_directories(Engine PUBLIC
     src/
@@ -191,7 +191,7 @@ endif()
 target_link_directories(Engine PUBLIC ${TARGET_LINK_DIRS} ${AUDIO_LIB_DIRS})
 
 if (WIN32)
-    target_compile_definitions(Engine PRIVATE SDG_PLATFORM_WINDOWS SDG_BUILD_DLL)
+    target_compile_definitions(Engine PRIVATE SDG_PLATFORM_WINDOWS)
 endif()
 
 # Engine Link Libraries
@@ -207,3 +207,4 @@ endif()
 target_link_libraries(Engine ${LINK_LIBS} ${AUDIO_LIBS})
 
 add_subdirectory(SurvivalGame)
+add_subdirectory(Asteroids)

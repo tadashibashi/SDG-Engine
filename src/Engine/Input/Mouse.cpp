@@ -14,7 +14,7 @@ namespace SDG
 
     void Mouse::ProcessInput(const SDL_MouseMotionEvent &motion)
     {
-        position = Vector2(motion.x, motion.y);
+        position = Vector2((float)motion.x, (float)motion.y);
     }
 
     void Mouse::ProcessInput(const SDL_MouseButtonEvent &button)

@@ -32,9 +32,13 @@ namespace SDG
         {
             callback_ = std::move(callback);
         }
+
+        // Whether or not to show debug collider rectangle
+        bool show{false};
     private:
         std::unordered_set<Collider2D *> collided_;
         Body *body_;
         std::function<void(Entity *thiz, Entity *other)> callback_;
+        bool toRemove_{false};
     };
 }

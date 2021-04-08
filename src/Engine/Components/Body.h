@@ -13,22 +13,22 @@ namespace SDG
 {
     class SpriteRenderer;
 
-    class SDG_API Body : public Component
+    class Body : public Component
     {
     public:
         Body(): Component(true, true),
                 velocity       (0, 0),
-                speed          (0),
                 show           (false),
                 tf             (nullptr),
                 spr            (nullptr),
                 size           (16, 16)
         {}
 
-        bool show;    // whether or not to show debug rect
-        Vector2 size; // in pixels
-        Vector2 velocity;  // in degrees
-        float speed;  // pixels-per-second
+        // Whether or not to show debug rect
+        bool show;
+        // Body size in pixels
+        Vector2 size;
+        Vector2 velocity;
 
         void Init() override;
 
@@ -41,11 +41,13 @@ namespace SDG
             useSpriteMask = use;
         }
         
-        [[nodiscard]] bool GetUseSpriteMask() const { return useSpriteMask; }
+        [[nodiscard]]
+        bool GetUseSpriteMask() const { return useSpriteMask; }
 
-        [[nodiscard]] Rectangle GetBounds() const
+        [[nodiscard]]
+        Rectangle GetBounds() const
         {
-            return Rectangle(position.x, position.y, size.w, size.h);
+            return Rectangle((int)position.x, (int)position.y, (int)size.w, (int)size.h);
         }
     private:
         Transform *tf;

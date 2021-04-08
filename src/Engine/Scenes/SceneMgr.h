@@ -68,12 +68,12 @@ namespace SDG
         }
 
         [[nodiscard]]
-        std::vector<Entity *> GetPersistentEntities() const { return persistent_; }
+        std::vector<Entity> &GetPersistentEntities() { return persistent_; }
 
     protected:
         SceneRunner runtime_;
         SceneCache scenes_;
-        std::vector<Entity *> persistent_;
+        std::vector<Entity> persistent_;
     };
 
 }

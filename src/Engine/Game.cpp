@@ -13,28 +13,14 @@
 #include <Engine/Components/EntityComponent.h>
 #include <Engine/Scenes/SceneMgr.h>
 
+#include <SDL_events.h>
+
 #if defined(__EMSCRIPTEN__)
 #include <emscripten.h>
 #endif
 
 namespace SDG
 {
-    class QuitListener : public SDG::EventListener<const SDL_QuitEvent &>
-    {
-    public:
-        explicit QuitListener(bool &isRunning) : isRunning(isRunning) { }
-
-        void Callback(const SDL_QuitEvent &ev) override
-        {
-            SDG_LOG("Received Quit Event at timestamp: {0}", ev.timestamp);
-            isRunning = false;
-        }
-
-        bool &isRunning;
-    };
-
-    QuitListener *quitListener = nullptr;
-
     Game::Game(const std::string &title, int x, int y, int width, int height, unsigned int windowFlags, unsigned long startingTime):
         graphics(new GraphicsDeviceMgr), time(), input(),
         spriteBatch(), content(), scenes(new SceneMgr),
@@ -133,8 +119,7 @@ namespace SDG
         input = new InputMgr;
         spriteBatch = new SpriteBatch(&graphics->GetCurrentDevice());
 
-        if (!quitListener) quitListener = new QuitListener(isRunning_);
-        input->QuitEvent += quitListener;
+        input->QuitEvent.AddListener(this, &Game::QuitHandler);
 
         Component::Provide(content);
         Component::Provide(time);
@@ -175,5 +160,11 @@ namespace SDG
     void Game::PostUpdate()
     {
 
+    }
+
+    void Game::QuitHandler(const SDL_QuitEvent &ev)
+    {
+        SDG_LOG("Quit Event received at timestamp: {0}", ev.timestamp);
+        this->Quit();
     }
 }
