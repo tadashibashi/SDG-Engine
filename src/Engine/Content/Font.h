@@ -13,7 +13,7 @@ namespace SDG {
     /**
      * Struct that manages an SDL_Texture*. Automatically cleans up on deletion
      */
-    class SDG_API Font {
+    class  Font {
     public:
         /**
          * @param filepath {const char*} filepath of the image to load

@@ -1,11 +1,10 @@
 #pragma once
 #include <type_traits>
-#include <Engine/Core.h>
 
 namespace SDG
 {
     template <typename T> requires std::is_arithmetic_v<T>
-    class SDG_API Rect_
+    class Rect_
     {
     public:
         Rect_() : x(0), y(0), w(0), h(0) { }
@@ -80,7 +79,7 @@ namespace SDG
             return !(topB > bottomA || bottomB < topA || rightB < leftA || leftB > rightA);
         }
 
-        // Convertible by casting to other _Rect types.
+        // Convertible by casting to other _Rect types. Please be aware of the effects of automatic type casting.
         template<typename U> requires 
             std::is_arithmetic_v<U> &&
             std::is_convertible_v<U, T>

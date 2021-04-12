@@ -43,7 +43,7 @@ public:
 
         GetContent()->LoadAtlas("assets/atlas/texturepacker_test.png");
         GetCamera()->SetScale(4.f);
-
+        GetCamera()->SetPosition(GetCamera()->GetWorldBounds().w/2.f, GetCamera()->GetWorldBounds().h/2.f);
 
         // Tiled Level Parsing
         Tiled::TileMap map("assets/levels/level1.tmx");
@@ -54,7 +54,7 @@ public:
             if (obj.type == "Player")
             {
                 auto &e = CreateEntity(CreatePlayer);
-                e.Components()->Get<Transform>()->position = Vector2(obj.x, obj.y);
+                e.Components()->Get<Transform>()->SetPositionLocal(Vector2(obj.x, obj.y));
                 e.Components()->Get<Body>()->show = false;
             }
             else if (obj.type == "Zombie")
@@ -147,7 +147,7 @@ public:
         // Generate Zombie by pressing 'S'
         if (GetInput()->GetKeyboard()->IsKeyDown(Key::S))
         {
-            auto &zomb = GetCurrentScene()->CreateEntity("Zombie");
+            auto &zomb = GetScene()->CreateEntity("Zombie");
             double x = Rand::Next(mapSize_.w);
             double y = Rand::Next(mapSize_.h);
             zomb.Components()->Add<Transform>(x, y, 1.f, 1.f);
@@ -156,7 +156,7 @@ public:
             zomb.Components()->Add<Collider2D>();
             zomb.Components()->Add<Zombie>();
 
-            size_t zombieSize = GetCurrentScene()->GetEntityTagList("Zombie").size();
+            size_t zombieSize = GetScene()->GetEntityTagList("Zombie").size();
             SDG_LOG("Zombie spawned at: ({0}, {1}). Total Zombies = {2}", x, y, zombieSize);
 
         }

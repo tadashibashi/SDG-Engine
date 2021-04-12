@@ -15,15 +15,6 @@
 
 namespace SDG
 {
-    // Data to render a sprite.
-    struct Glyph {
-        Glyph() : texture(), depth(0), topleft(), bottomleft(), topright(),
-            bottomright() { }
-        Vertex topleft, bottomleft, topright, bottomright;
-        Texture2D texture;
-        float depth;
-    };
-
     enum class SortOrder {
         None,
         FrontToBack,
@@ -31,45 +22,51 @@ namespace SDG
         Texture
     };
 
-    class SDG_API RenderBatch {
-    public:
-        RenderBatch(GLuint offset, GLuint vertex_count, Texture2D texture)
-                : offset_(offset), vertex_count_(vertex_count), texture_(texture)
-        {}
-        GLuint offset_;
-        GLuint vertex_count_;
-        Texture2D texture_;
-    };
-
+    // TODO: Try to move all graphics library-specific code into GraphicsDevice, which SpriteBatch could then call
+    // generically without needing base classes.
     class SpriteBatch {
+    protected:
+        // Data to render a sprite.
+        struct Glyph {
+            Glyph() : texture(), depth(0), topleft(), bottomleft(), topright(),
+                      bottomright() { }
+            Vertex topleft, bottomleft, topright, bottomright;
+            Texture2D texture;
+            float depth;
+        };
+
+        // Data to render a batch of glyphs.
+        class RenderBatch {
+        public:
+            RenderBatch(uint offset, uint vertex_count, Texture2D texture)
+                    : offset_(offset), vertex_count_(vertex_count), texture_(texture)
+            {}
+            uint offset_;
+            uint vertex_count_;
+            Texture2D texture_;
+        };
     public:
         explicit SpriteBatch(GraphicsDevice *graphicsDevice);
-        ~SpriteBatch();
+        virtual ~SpriteBatch() = default;
 
-        void Begin(const glm::mat4 &matrix, SortOrder sort_order = SortOrder::Texture);
-        // Does post-processing like depth-sorting.
-        void End();
+        virtual void Begin(const glm::mat4 &matrix, SortOrder sort_order) = 0;
+        virtual void End() = 0;
+
         void DrawTexture(Texture2D texture, FRectangle dest, FRectangle source, Color color, float depth);
         void DrawTexture(Texture2D texture, FRectangle dest, FRectangle source, Color color, float depth, Vector2 anchor, float rotation);
-        void DrawRectangle(FRectangle dest, Color color, float depth = 0);
-        [[nodiscard]] Texture2D GetPixel() const { return pixel; }
-        void RenderBatches();
-    private:
-        GraphicsDevice *graphics;
-        Shader *shader;
-        SortOrder sortOrder;
+        void DrawRectangle(FRectangle dest, Color color, float depth);
+        void DrawRectangle(FRectangle dest, Color color, float depth, Vector2 anchor, float rotation);
+
+        virtual void RenderBatches() = 0;
+
+        Texture2D GetPixel() const { return pixel; }
+    protected:
         std::vector<Glyph> glyphs;
         std::vector<RenderBatch> batches;
-        GLuint vbo{0}, vao{0};
-        Vector2 scale = Vector2(10.f, 10.f);
+        GraphicsDevice *graphics;
 
+        Vector2 scale{10.f, 10.f};
         Texture2D pixel;
-
-        void CreateBatches();
-
-        void SortGlyphs();
-        void CreateVertexArray();
-        static void DisableVertexArray();
     };
 }
 

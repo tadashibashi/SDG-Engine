@@ -65,4 +65,20 @@ namespace SDG
 
         return (GLubyte)digits.find_first_of(c);
     }
+
+    std::string Color::ToString() const
+    {
+        return std::string("{ " + std::to_string(r) + ", " + std::to_string(g) +
+                           ", " + std::to_string(b) + ", " + std::to_string(a) + " }");
+    }
+
+    FColor Color::ToFColor() const
+    {
+        return FColor {
+                .r = (float)r / 255.f,
+                .g = (float)g / 255.f,
+                .b = (float)b / 255.f,
+                .a = (float)a / 255.f
+        };
+    }
 }

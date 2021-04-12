@@ -11,7 +11,7 @@
 
 namespace SDG::Tiled
 {
-    struct SDG_API TileLayer : public Layer
+    struct  TileLayer : public Layer
     {
         int width;
         int height;

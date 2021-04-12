@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include <Engine/CollisionMgr.h>
 #include <Engine/Scenes/SceneMgr.h>
+#include <Engine/Components/Transform.h>
 
 namespace SDG
 {
@@ -28,6 +29,11 @@ namespace SDG
             entities_ = new EntityMgr;
         if (!camera_)
             camera_ = new Camera2D(*GetGraphicsDeviceMgr());
+
+        // Move camera to the {0, 0} position
+        FRectangle bounds = camera_->GetWorldBounds();
+        camera_->SetPosition(bounds.w/2, bounds.h/2);
+
         if (!collisions_)
             collisions_ = new CollisionMgr();
 
@@ -88,5 +94,27 @@ namespace SDG
     {
         entity.SetPersistent(true);
         GetSceneMgr()->persistent_.emplace_back().Swap(entity);
+    }
+
+    Entity &Scene::CreateEntity(std::string tag, Vector2 position)
+    {
+        Entity &e = entities_->CreateEntity(std::move(tag));
+        if (Transform *tf = e.Components()->Get<Transform>())
+        {
+            tf->SetPositionLocal(position);
+        }
+
+        return e;
+    }
+
+    Entity &Scene::CreateEntity(const std::function<void(Entity & )> &factoryFunction, Vector2 position)
+    {
+        Entity &e = entities_->CreateEntity(factoryFunction);
+        if (Transform *tf = e.Components()->Get<Transform>())
+        {
+            tf->SetPositionLocal(position);
+        }
+
+        return e;
     }
 }

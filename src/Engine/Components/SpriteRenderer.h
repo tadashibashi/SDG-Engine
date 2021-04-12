@@ -27,8 +27,8 @@ namespace SDG
         [[nodiscard]] Frame GetCurrentFrame() const
         {
             // Returns a dummy frame if Sprite is null.
-            return (sprite)
-            ? sprite->At((int)imageIndex % (int)sprite->GetLength()) : Frame();
+            return (sprite) ?
+                sprite->At((int)imageIndex % (int)sprite->GetLength()) : Frame();
         }
 
         float depth;

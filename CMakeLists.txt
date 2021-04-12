@@ -49,8 +49,8 @@ endif()
 
 # Engine
 add_library(Engine STATIC
-        src/Engine/Graphics/GraphicsDevice.cpp
-        src/Engine/Graphics/GraphicsDeviceMgr.cpp
+        src/Engine/Graphics/OpenGL/GraphicsDevice_GL.cpp
+        src/Engine/Graphics/OpenGL/GraphicsDeviceMgr_GL.cpp
         src/Engine/Input/InputMgr.cpp
         src/Engine/Content/Shader.cpp
         src/Engine/Content/Shader.h
@@ -121,7 +121,7 @@ add_library(Engine STATIC
         src/Engine/Audio/MixEngine/MixEngine.cpp
         src/Engine/Math/TweenFunctions.cpp
         src/Engine/File/SwapEndian.h
-        src/Engine/GL.h
+        src/Engine/GraphicsLibrary.h
         src/Engine/Content/Tiled/TileMap.h
         src/Engine/Content/Tiled/TileSet.h
         src/Engine/Content/Tiled/TileLayer.h
@@ -151,7 +151,11 @@ add_library(Engine STATIC
         src/Engine/Scripting/VM.h
         src/Engine/Graphics/SpriteFont.h
         src/Engine/Graphics/SpriteFont.cpp
-        src/Engine/Events/Delegate.h src/Engine/States/StateMachine.h src/Engine/States/StateMachineState.h)
+        src/Engine/Events/Delegate.h
+        src/Engine/States/StateMachine.h
+        src/Engine/States/StateMachineState.h
+        src/Engine/Graphics/GraphicsDeviceMgr.h
+        src/Engine/Graphics/GraphicsDevice.h src/Engine/Platform.cpp src/Engine/Platform.h src/Engine/Graphics/OpenGL/SpriteBatch_GL.cpp src/Engine/Graphics/OpenGL/SpriteBatch_GL.h src/Engine/Content/Pixel.h)
 
 target_include_directories(Engine PUBLIC
     src/
@@ -189,10 +193,6 @@ else()
 endif()
 
 target_link_directories(Engine PUBLIC ${TARGET_LINK_DIRS} ${AUDIO_LIB_DIRS})
-
-if (WIN32)
-    target_compile_definitions(Engine PRIVATE SDG_PLATFORM_WINDOWS)
-endif()
 
 # Engine Link Libraries
 if (EMSCRIPTEN)

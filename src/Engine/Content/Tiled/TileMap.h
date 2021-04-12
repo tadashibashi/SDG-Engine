@@ -14,7 +14,7 @@
 
 namespace SDG::Tiled
 {
-    struct SDG_API TileMap
+    struct  TileMap
     {
     public:
         TileMap() = default;

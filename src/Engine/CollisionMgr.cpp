@@ -64,7 +64,7 @@ namespace SDG
             }
         }
 
-        auto camBounds = GetCurrentScene()->GetCamera()->GetWorldBounds();
+        auto camBounds = GetScene()->GetCamera()->GetWorldBounds();
 
         // Check collisions
         for (auto &[x, columns]: colls_)             // for every column of collider lists

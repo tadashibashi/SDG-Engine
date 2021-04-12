@@ -30,14 +30,14 @@ namespace SDG
         {
             life -= (int)GetTime()->DeltaTicks();
             if (life <= 0)
-                GetCurrentScene()->DestroyEntity(*GetEntity());
+                GetScene()->DestroyEntity(*GetEntity());
         }
 
         // Color is #df7126
         void Draw() override
         {
             Vector2 position = GetComponent<Transform>()->GetPosition();
-            auto size = GetComponent<Body>()->size * GetCurrentScene()->GetCamera()->GetScale();
+            auto size = GetComponent<Body>()->size * GetScene()->GetCamera()->GetScale();
             GetSpriteBatch()->DrawRectangle(FRectangle(position.x, position.y, size.w, size.h),
                                             Color(0xDF7126FF), -1000.f);
         }

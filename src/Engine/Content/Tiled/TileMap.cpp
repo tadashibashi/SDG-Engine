@@ -262,7 +262,11 @@ namespace SDG::Tiled
     {
         std::vector<int> temp;
         // CSV encoding.
+#if _MSC_VER
         char *pTileDataCopy = _strdup(data);
+#else
+        char *pTileDataCopy = strdup(data);
+#endif
         const char *pChar = std::strtok(pTileDataCopy, ",\n");
         while(pChar != nullptr)
         {

@@ -13,7 +13,7 @@
 
 namespace SDG
 {
-    class SDG_API InputMgr {
+    class  InputMgr {
     public:
         InputMgr();
         ~InputMgr();

@@ -5,6 +5,7 @@
  * ===========================================================================*/
 #pragma once
 #include <Engine/Core.h>
+#include <Engine/Graphics/GraphicsDeviceMgr.h>
 #include <string>
 
 struct SDL_QuitEvent;

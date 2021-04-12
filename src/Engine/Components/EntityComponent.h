@@ -21,7 +21,7 @@ namespace SDG
     class SceneMgr;
     class Scene;
 
-    class EntityComponent: public Component {
+    class EntityComponent : public Component {
     public:
         EntityComponent(bool isUpdatable, bool isDrawable);
         static void Provide(SceneMgr *sceneMgr) { sceneMgr_ = sceneMgr; }
@@ -34,7 +34,8 @@ namespace SDG
             return sceneMgr_;
         }
 
-        static Scene *GetCurrentScene();
+        // Gets the current Scene
+        static Scene *GetScene();
 
     private:
         static SceneMgr *sceneMgr_;

@@ -6,19 +6,19 @@
 #pragma once
 #include <Engine/Core.h>
 #include <Engine/Math/Vector2.h>
-#include <Engine/GL.h>
+#include <Engine/GraphicsLibrary.h>
 
 namespace SDG
 {
-    class SDG_API Texture2D
+    class Texture2D
     {
     public:
         explicit Texture2D(unsigned int id) : id(id), size() {}
 
-        Texture2D() : id(0), size() { }
+        Texture2D() : id{}, size{} { }
         Texture2D(unsigned int id, int width, int height)
             : id(id), size(width, height) { }
-        [[nodiscard]] GLuint GetID() const { return id; }
+        [[nodiscard]] uint GetID() const { return id; }
         [[nodiscard]] Point GetSize() const { return size; }
         [[nodiscard]] int GetWidth() const { return size.w; }
         [[nodiscard]] int GetHeight() const { return size.h; }
@@ -27,8 +27,8 @@ namespace SDG
         [[nodiscard]] bool IsLoaded() const { return id != 0; }
         int *SizeData() { return &size.x; }
     private:
-        // GL Texture ID
-        GLuint id;
+        // Texture ID
+        uint id;
         // Pixel dimensions
         Point size;
     };

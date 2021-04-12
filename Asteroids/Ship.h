@@ -8,7 +8,7 @@
 #define SHIP_H
 
 #include <Engine/Components/EntityComponent.h>
-#include <Engine/GL.h>
+#include <Engine/GraphicsLibrary.h>
 #include <Engine/Math/Math.h>
 #include <Engine/Math/Tween.h>
 #include <Engine/Math/Rand.h>
@@ -37,7 +37,7 @@ public:
     }
 
     [[nodiscard]]
-    bool HasLives() const { return this->lives != 0; }
+    bool HasLives() const { return this->lives > 0; }
 
     [[nodiscard]]
     int GetLives() const { return this->lives; }
@@ -61,6 +61,7 @@ public:
 private:
     int lives, score, level;
 };
+
 
 class Ship: public EntityComponent
 {
@@ -107,22 +108,13 @@ public:
         states.Update(*GetTime());
     }
 
-    void AliveState(float delta, float totalTime)
-    {
-        Move();
-        Fire();
-    }
-
-    void GameOverEnter()
-    {
-
-    }
-
+    void AliveState(float delta, float totalTime);
     void Win()
     {
         info.IncreaseLevel();
 
     }
+
     void GameOverStep(float delta, float time);
     void DeadStateEnter();
     void DeadStateStep(float delta, float time)
@@ -149,7 +141,7 @@ public:
 
         // Fire with mouse
         auto mousePos = GetInput()->GetMouse()->GetPosition();
-        mousePos = GetCurrentScene()->GetCamera()->ScreenToWorld(mousePos);
+        mousePos = GetScene()->GetCamera()->ScreenToWorld(mousePos);
 
         if (GetInput()->GetMouse()->ButtonDown(Button::Left))
         {
@@ -212,7 +204,7 @@ public:
         velocity = Math::Lerp(velocity, Vector2(), .00125f);
         body->velocity = velocity;
 
-        auto roomSz = GetCurrentScene()->GetCamera()->GetWorldBounds();
+        auto roomSz = GetScene()->GetCamera()->GetWorldBounds();
 
         //std::cout << "Ship position " << tf->position.ToString() << '\n';
 

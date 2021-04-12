@@ -10,7 +10,7 @@
 
 namespace SDG
 {
-    class SDG_API SceneMgr {
+    class  SceneMgr {
         friend class Scene;
     public:
         SceneMgr();

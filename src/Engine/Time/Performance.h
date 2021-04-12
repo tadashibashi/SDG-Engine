@@ -12,7 +12,7 @@
 typedef std::map<std::string, 
     std::chrono::time_point<std::chrono::high_resolution_clock>> ClockMap;
 
-class SDG_API Performance {
+class  Performance {
 public:    
     static void Start(const std::string& testName = "")
     {

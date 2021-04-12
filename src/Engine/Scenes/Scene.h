@@ -4,7 +4,9 @@
  * 
  * ===========================================================================*/
 #pragma once
-#include <Engine/Core.h>
+#ifndef SDG_SCENE_H
+#define SDG_SCENE_H
+
 #include <Engine/Graphics/Camera2D.h>
 #include <Engine/Components/EntityComponent.h>
 
@@ -12,22 +14,16 @@ namespace SDG
 {
     class CollisionMgr;
 
-    class SDG_API Scene : public EntityComponent
+    class Scene : public EntityComponent
     {
         friend class SceneRunner;
     public:
         Scene();
         ~Scene() override;
 
-        Entity &CreateEntity(std::string tag = "")
-        {
-            return entities_->CreateEntity(std::move(tag));
-        }
+        Entity &CreateEntity(std::string tag = "", Vector2 position = Vector2());
 
-        Entity &CreateEntity(const std::function<void(Entity &)> &factoryFunction)
-        {
-            return entities_->CreateEntity(factoryFunction);
-        }
+        Entity &CreateEntity(const std::function<void(Entity &)> &factoryFunction, Vector2 position = Vector2());
 
         static void MakeEntityPersistent(Entity &entity);
         static void RemoveEntityPersistence(Entity &entity);
@@ -86,3 +82,5 @@ namespace SDG
         CollisionMgr *collisions_;
     };
 }
+
+#endif

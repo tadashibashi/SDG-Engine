@@ -31,7 +31,7 @@ using namespace SDG;
         void Update() override
         {
             GetComponent<SpriteRenderer>()->rotation += 1;
-            auto roomSz = GetCurrentScene()->GetCamera()->GetWorldBounds();
+            auto roomSz = GetScene()->GetCamera()->GetWorldBounds();
             auto tf = GetComponent<Transform>();
 
             while (tf->position.x > roomSz.w + 16) tf->position.x -= (roomSz.w + 32);
@@ -48,7 +48,7 @@ using namespace SDG;
         {
             if (other->GetTag() == "Bullet")
             {
-                GetCurrentScene()->DestroyEntity(*other);
+                GetScene()->DestroyEntity(*other);
 
                 auto spr = thiz->Components()->Get<SpriteRenderer>();
                 auto ast = thiz->Components()->Get<Asteroid>();
@@ -57,16 +57,16 @@ using namespace SDG;
 
                 if (health <= 0)
                 {
-                    GetCurrentScene()->DestroyEntity(*thiz);
+                    GetScene()->DestroyEntity(*thiz);
                 }
                 else
                 {
-                    Entity &nast = GetCurrentScene()->CreateEntity(MakeAsteroid);
+                    Entity &nast = GetScene()->CreateEntity(MakeAsteroid);
                     nast.Components()->Get<Transform>()->SetPositionLocal(
                             thiz->Components()->Get<Transform>()->GetPosition());
                     nast.Components()->Get<Asteroid>()->SetHealth(health);
                     auto spr2 = nast.Components()->Get<SpriteRenderer>();
-                    switch(health)
+                    switch (health)
                     {
                         case 2:
                             spr->SetSpriteByKey("asteroid-med");

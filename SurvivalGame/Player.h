@@ -6,7 +6,7 @@
 #pragma once
 
 #include <Engine/Components/EntityComponent.h>
-#include <Engine/GL.h>
+#include <Engine/GraphicsLibrary.h>
 #include <Engine/Math/Math.h>
 #include <Engine/Math/Tween.h>
 #include <Engine/Math/Rand.h>
@@ -48,7 +48,7 @@ public:
         if (thiz->GetTag() == "Player" && other->GetTag() == "Zombie")
         {
             SDG_LOG("You collided with a Zombie!");
-            GetCurrentScene()->DestroyEntity(*other);
+            GetScene()->DestroyEntity(*other);
         }
     }
 
@@ -63,7 +63,7 @@ public:
         {
             if (bulletTimer_ == 0)
             {
-                auto &e = GetCurrentScene()->CreateEntity(MakeBullet);
+                auto &e = GetScene()->CreateEntity(MakeBullet);
                 e.Components()->Get<Body>()->velocity = axis.Normalize() * 8.f;
                 e.Components()->Get<Transform>()->position = GetComponent<Transform>()->GetPosition() + Vector2(-2, -10.f);
 
@@ -82,7 +82,7 @@ public:
 
         // Set window title to mouse position
         auto mousePos = GetInput()->GetMouse()->GetPosition();
-        mousePos = GetCurrentScene()->GetCamera()->ScreenToWorld(mousePos);
+        mousePos = GetScene()->GetCamera()->ScreenToWorld(mousePos);
 
         GetGraphicsDeviceMgr()->GetCurrentDevice().SetWindowTitle(
                 (std::to_string(mousePos.x) + ", " + std::to_string(mousePos.y)).c_str());

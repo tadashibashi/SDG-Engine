@@ -13,7 +13,7 @@
 
 namespace SDG::Tiled
 
-{   struct SDG_API Image
+{   struct  Image
     {
         Image(std::string pPath, int pWidth, int pHeight):
                 path(std::move(pPath)), width(pWidth), height(pHeight) { }
@@ -26,7 +26,7 @@ namespace SDG::Tiled
         int height;
     };
 
-    struct SDG_API TileSet
+    struct  TileSet
     {
         int firstgid;
         std::string name;

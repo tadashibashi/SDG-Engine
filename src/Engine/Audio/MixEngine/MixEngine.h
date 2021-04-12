@@ -31,7 +31,7 @@ namespace SDG
      * sfx, tracking playing status, and safely closes/deletes all audio assets.
      * Dependency: SDL_mixer
      */
-    class SDG_API MixEngine
+    class  MixEngine
     {
     public:
         MixEngine();

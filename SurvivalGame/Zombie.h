@@ -38,8 +38,8 @@ namespace SDG
             }
             else if (other->GetTag() == "Bullet")
             {
-                GetCurrentScene()->DestroyEntity(*thiz);
-                GetCurrentScene()->DestroyEntity(*other);
+                GetScene()->DestroyEntity(*thiz);
+                GetScene()->DestroyEntity(*other);
             }
         }
 

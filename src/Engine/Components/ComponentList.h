@@ -15,7 +15,7 @@ namespace SDG
     class Component;
     class Entity;
 
-    class SDG_API ComponentList {
+    class  ComponentList {
         friend class Entity;
     public:
         ComponentList();

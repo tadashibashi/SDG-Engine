@@ -12,7 +12,7 @@
 namespace SDG::Tiled
 {
     // Tile metadata
-    struct SDG_API Tile
+    struct  Tile
     {
         int id;
         std::string type;

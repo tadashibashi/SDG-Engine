@@ -9,7 +9,7 @@
 
 namespace SDG
 {
-    class SDG_API Audio {
+    class Audio {
     public:
         Audio();
         ~Audio();

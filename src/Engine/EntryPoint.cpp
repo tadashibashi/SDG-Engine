@@ -24,7 +24,7 @@
     }
 #endif
 
-#if defined (SDG_PLATFORM_HTML5)
+#if defined (SDG_PLATFORM_EMSCRIPTEN)
 #include <emscripten.h>
 
     void RunGame(void *arg)

@@ -9,7 +9,7 @@
 
 namespace SDG::Tiled
 {
-    struct SDG_API Layer
+    struct  Layer
     {
         virtual ~Layer() = default;
 

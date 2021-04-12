@@ -4,10 +4,6 @@ add_executable(${PROJECT_NAME} Asteroids.cpp Ship.h Asteroid.h Ship.cpp Scenes/G
 
 target_link_libraries(${PROJECT_NAME} Engine)
 
-if (WIN32)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE SDG_PLATFORM_WINDOWS)
-endif()
-
 # Copy symlink of assets folder into binary directory.
 if (NOT IS_SYMLINK "${CMAKE_CURRENT_BINARY_DIR}/assets")
     set(source "${CMAKE_CURRENT_SOURCE_DIR}/assets")

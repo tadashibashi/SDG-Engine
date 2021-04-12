@@ -4,8 +4,8 @@
  * 
  * ===========================================================================*/
 #include "Game.h"
+#include <Engine/Core.h>
 #include "Log.h"
-#include <Engine/Graphics/GraphicsDeviceMgr.h>
 #include <Engine/Time/GameTime.h>
 #include <Engine/Input/InputMgr.h>
 
@@ -15,25 +15,23 @@
 
 #include <SDL_events.h>
 
-#if defined(__EMSCRIPTEN__)
-#include <emscripten.h>
-#endif
+#include <Engine/Platform.h>
 
 namespace SDG
 {
     Game::Game(const std::string &title, int x, int y, int width, int height, unsigned int windowFlags, unsigned long startingTime):
-        graphics(new GraphicsDeviceMgr), time(), input(),
-        spriteBatch(), content(), scenes(new SceneMgr),
-        isRunning_(false)
+            graphics(CreateNativeGraphicsDeviceMgr()), time(), input(),
+            spriteBatch(), content(), scenes(new SceneMgr),
+            isRunning_(false)
     {
         graphics->Init(title.c_str(), x, y, width, height, windowFlags);
         Init();
     }
 
     Game::Game(const std::string &configPath):
-        graphics(new GraphicsDeviceMgr), time(), input(),
-        spriteBatch(), content(), scenes(new SceneMgr),
-        isRunning_(false)
+            graphics(CreateNativeGraphicsDeviceMgr()), time(), input(),
+            spriteBatch(), content(), scenes(new SceneMgr),
+            isRunning_(false)
     {
         // Initialize lua/sol.
         sol::state lua;
@@ -117,7 +115,7 @@ namespace SDG
         content = new ContentMgr;
         time = new GameTime;
         input = new InputMgr;
-        spriteBatch = new SpriteBatch(&graphics->GetCurrentDevice());
+        spriteBatch = CreateNativeSpriteBatch(&graphics->GetCurrentDevice());
 
         input->QuitEvent.AddListener(this, &Game::QuitHandler);
 

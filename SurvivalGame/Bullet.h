@@ -30,7 +30,7 @@ namespace SDG
         {
             life -= (int)GetTime()->DeltaTicks();
             if (life <= 0)
-                GetCurrentScene()->DestroyEntity(*GetEntity());
+                GetScene()->DestroyEntity(*GetEntity());
         }
 
         void Draw() override

@@ -6,7 +6,6 @@
 #include "SpriteRenderer.h"
 #include "Transform.h"
 #include <cmath>
-#include <Engine/Content/Sprite.h>
 
 namespace SDG
 {
@@ -25,10 +24,13 @@ namespace SDG
     {
         if (Owner()) {
             transform_ = Owner()->Get<Transform>();
-            Update();
+            if (transform_)
+            {
+                position = transform_->GetPosition();
+                scale = transform_->scale;
+            }
             //transform_->OnPositionChange.AddListener()
         }
-
     }
 
     // ========================================================================
@@ -42,12 +44,6 @@ namespace SDG
                     imageIndex + sprite->GetBaseSpeed() * (float)GetTime()->DeltaTicks() * 0.001f * imageSpeed,
                     (float)sprite->GetLength());
         }
-
-        if (transform_)
-        {
-            position = transform_->GetPosition();
-            scale = transform_->scale;
-        }
     }
 
     // ========================================================================
@@ -56,6 +52,11 @@ namespace SDG
     void SpriteRenderer::Draw()
     {
         SpriteBatch &spriteBatch = *GetSpriteBatch();
+        if (transform_)
+        {
+            position = transform_->GetPosition();
+            scale = transform_->scale;
+        }
 
         if (sprite) {
             const Frame &frame = sprite->At((int) imageIndex);
@@ -65,6 +66,8 @@ namespace SDG
                            position.y + offset.y,
                            (float) frame.w * scale.x,
                            (float) frame.h * scale.y);
+
+            // Calculate the uv (normalized proportion within the subimage that this frame exists)
             float w_scale(1.f / (float) frame.texture.GetWidth());
             float h_scale(1.f / (float) frame.texture.GetHeight());
 

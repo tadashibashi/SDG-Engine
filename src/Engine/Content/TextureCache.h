@@ -8,13 +8,13 @@
 #include <Engine/Content/Texture2D.h>
 #include <string>
 #include <vector>
-#include <Engine/GL.h>
+#include <Engine/GraphicsLibrary.h>
 #include <map>
 
 namespace SDG
 {
     // Manages loading and storing Texture2D
-    class SDG_API TextureCache {
+    class  TextureCache {
     public:
         TextureCache();
         ~TextureCache();

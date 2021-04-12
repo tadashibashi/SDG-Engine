@@ -31,11 +31,10 @@ namespace SDG
     {
         // Initialization
         auto *entity = entities_.CheckOut();
+        entity->Init(); // ComponentList is created inside Entity, must be called before factory function
 
-        entity->Init();
-
-        if (factory)
-            factory(*entity);
+        // Perform "construction"
+        factory(*entity);
 
         toAdd_.emplace_back(entity);
 

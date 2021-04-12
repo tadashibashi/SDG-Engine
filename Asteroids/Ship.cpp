@@ -28,7 +28,7 @@ void Ship::CreateBullet()
 {
     if (bulletTimer_ == 0)
     {
-        auto &e = GetCurrentScene()->CreateEntity(Bullet::MakeBullet);
+        auto &e = GetScene()->CreateEntity(Bullet::MakeBullet);
         e.Components()->Get<Body>()->velocity = Math::Trajectory(spr->rotation, 1.f) * 8.f;
         auto bulletPos =  GetComponent<Transform>()->GetPosition();
         bulletPos.y -= 1;
@@ -44,14 +44,14 @@ void Ship::Init()
 
     //GetEntity()->SetPersistent(true);
 
-    tween = new Tween([this](float val) { tf->scale = Vector2(val * Math::Sign(tf->scale.x), val); }, 1.f, 5.f, 1.f,
-                      TweenFunctions::EaseInCubic);
+    tween = new Tween([this](float val) { tf->scale = Vector2(val * Math::Sign(tf->scale.x), val); },
+                      1.f, 5.f, 1.f,TweenFunctions::EaseInCubic);
     tween->SetYoyo(true);
 
     // Setup Position and image
     tf = GetComponent<Transform>();
     spr = GetComponent<SpriteRenderer>();
-    auto size = GetCurrentScene()->GetCamera()->GetWorldBounds();
+    auto size = GetScene()->GetCamera()->GetWorldBounds();
     tf->position = Vector2(size.w/2, size.h/2);
 
     // Setup Collider
@@ -67,10 +67,15 @@ void Ship::Init()
             .OnStep(this, &Ship::RecoverStateStep)
             .OnExit(this, &Ship::RecoverEventExit);
     states.AddState(State::GameOver)
-            .OnEnter(this, &Ship::GameOverEnter)
             .OnStep(this, &Ship::GameOverStep);
 
     states.StartState(State::Alive);
+}
+
+void Ship::AliveState(float delta, float totalTime)
+{
+    Move();
+    Fire();
 }
 
 void Ship::GameOverStep(float delta, float time)
@@ -81,10 +86,12 @@ void Ship::GameOverStep(float delta, float time)
         info.ResetLevel();
         info.SetScore(0);
         info.SetLives(INIT_LIVES);
-        auto worldBounds = GetCurrentScene()->GetCamera()->GetWorldBounds();
+        auto worldBounds = GetScene()->GetCamera()->GetWorldBounds();
         this->tf->SetPositionLocal(Vector2(worldBounds.w/2, worldBounds.h/2));
         states.StartState(State::Alive);
         spr->color = Color(255, 255, 255, 255);
         GetComponent<Body>()->show = true;
     }
 }
+
+

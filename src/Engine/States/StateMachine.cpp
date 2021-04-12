@@ -1,12 +1,14 @@
 /* =============================================================================
- * GL
+ * StateMachine
  * 
  * 
  * ===========================================================================*/
-#pragma once
+#include "StateMachine.h"
 
-#ifdef __EMSCRIPTEN__
-    #include <GLES2/GL2.h>
-#else
-    #include <GL/glew.h>
-#endif
+StateMachine::StateMachine()
+{
+}
+
+StateMachine::~StateMachine()
+{
+}

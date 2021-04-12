@@ -3,38 +3,50 @@
 #include <deque>
 #include <cassert>
 
-namespace SDG {
-    /* ========================================================================
-     * struct PoolID
-     * A struct that poolable objects must contain.
-     * ======================================================================*/
-    struct PoolID {
-        PoolID() : id_(SIZE_MAX), inner_id_(SIZE_MAX), next_(SIZE_MAX), is_alive_(false)
-        {}
+namespace SDG
+{
+    const int DefaultInitialPoolSize = 256;
+
+    // Identification for management by a Pool object. A Poolable object contains this as a field.
+    struct PoolID
+    {
+        PoolID() : id_{SIZE_MAX}, inner_id_{SIZE_MAX}, next_{SIZE_MAX}, is_alive_{false}, pool_id_{} {}
+
+        // Indicates the index location in the data struction.
         size_t id_;
+        // The unique individual ID.
         size_t inner_id_;
+        // Free list that points to the next free Poolable's index.
         size_t next_;
+        // Flag indicating whether or not the entity has been taken out or not.
         bool is_alive_;
 
-        // Compare id's
+        // Pointer to the containing pool.
+        void *pool_id_;
+
+        // Comparison with other id's. Checks actual unique inner ID.
         bool operator==(const PoolID &other) const
         {
-            return inner_id_ == other.inner_id_;
+            return (inner_id_ == other.inner_id_) && (pool_id_ == other.pool_id_);
         }
     };
+
+    class IPoolable; // forward declaration
+
+    template <typename T>
+    concept Poolable = std::is_base_of_v<IPoolable, T>;
 
     /* ========================================================================
      * class IPoolable
      * All poolable classes must derive from this class.
      * ======================================================================*/
-    class IPoolable {
-    public:
-        // Identification for management in Pool. Do not touch.
+    class IPoolable
+    {
+        template <Poolable T> friend class Pool;
+    private:
+        // Identification for management by a Pool object.
         PoolID pid;
     };
-
-    template <typename T>
-    concept Poolable = std::is_base_of_v<IPoolable, T>;
 
     /* ========================================================================
      * class Pool
@@ -45,35 +57,32 @@ namespace SDG {
     class Pool
     {
     public:
-        explicit Pool(size_t init_cap)
-                : free_list_(init_cap > 0 ? 0 : SIZE_MAX), v_(), ticket_(0)
+        explicit Pool(size_t init_cap = DefaultInitialPoolSize)
+                : free_list_(init_cap > 0 ? 0 : SIZE_MAX), v_{}, ticket_{}
         {
             ExpandPool(init_cap);
         }
 
         /**
-         * Check out an object from the Pool.
+         * Check out/take out an object from the Pool.
          * @return ptr to a fresh object.
          */
         T* CheckOut()
         {
-            if (free_list_ == SIZE_MAX) { // none free, expand pool.
-                size_t next_free = v_.size();
+            size_t next_free;
+            if (free_list_ == SIZE_MAX) // no free poolable entities, expand the pool.
+            {
+                next_free = v_.size();
 
-                ExpandPool(v_.size() * 2 + 1);
-
-                T *ret = &v_[next_free];
-                ret->pid.is_alive_ = true;
-                free_list_ = ret->pid.next_;
-
-                return ret;
-            } else {                      // free entities to take.
-                T *ret = &v_[free_list_];
-                ret->pid.is_alive_ = true;
-                free_list_ = ret->pid.next_;
-
-                return ret;
+                // Every time the pool expands, increase its size by a factor of 2.
+                ExpandPool(next_free * 2 + 1);
             }
+            else                        // free entities to take.
+            {
+                next_free = free_list_;
+            }
+
+            return GetRefreshedEntity(next_free);
         }
 
         /**
@@ -97,21 +106,19 @@ namespace SDG {
          */
         void ReturnAll()
         {
-            size_t vsize(CurrentMaxSize());
-            for (size_t i = 0; i < vsize; ++i) {
-                if (v_[i].pid.is_alive_) {
-                    Return(&v_[i]);
-                }
+            for(T &entity : v_)
+            {
+                if (entity.pid.is_alive_)
+                    Return(&entity);
             }
         }
 
+        // The size of the pool.
         [[nodiscard]]
-        size_t CurrentMaxSize() const
-        {
-            return v_.size();
-        }
+        size_t CurrentMaxSize() const { return v_.size(); }
 
     private:
+        // Safely adds poolable entities to the pool, expanding its size.
         void ExpandPool(size_t new_size)
         {
             assert(new_size >= v_.size());
@@ -121,10 +128,31 @@ namespace SDG {
                 obj.pid.id_ = i;
                 obj.pid.inner_id_ = ticket_++;
                 obj.pid.next_ = (i < new_size - 1) ? i + 1 : SIZE_MAX;
+                obj.pid.pool_id_ = (void *)this;
             }
         }
 
-        size_t free_list_, ticket_;
+        // Helper that gets the next available entity in the pool
+        T *GetRefreshedEntity(size_t index)
+        {
+            T *ret = &v_[index];
+            ret->pid.is_alive_ = true;
+            free_list_ = ret->pid.next_; // update the free list
+
+            return ret;
+        }
+
+        // List pointing to the next free poolable entity.
+        size_t free_list_;
+
+        // The current id index that the pool uses to issue each unique ID starting at 0 and increasing upon assignment
+        // each time a new entity is added to the pool.
+        size_t ticket_;
+
+        // A deque was chosen since we want to allow expandable pool.
+        // The current implementation returns pointers to the various real elements.
+        // Since we originally used vector, whenever it resized all the ptrs would become invalidated.
         std::deque<T> v_;
-    };
-}
+
+    }; // class Pool
+} // namespace SDG

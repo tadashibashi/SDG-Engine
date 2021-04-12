@@ -12,7 +12,7 @@
 
 namespace SDG::Tiled
 {
-    struct SDG_API ObjectLayer : public Layer
+    struct  ObjectLayer : public Layer
     {
         std::vector<Object> objects;
     };

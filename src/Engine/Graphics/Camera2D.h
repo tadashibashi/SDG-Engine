@@ -10,7 +10,7 @@ namespace SDG
 {
     // An object that represents the player's view into the world.
     // Make sure to set altered flag to true when modifying SetPosition or Scale.
-    class SDG_API Camera2D {
+    class  Camera2D {
     public:
         explicit Camera2D(GraphicsDeviceMgr &device);
 

@@ -133,7 +133,7 @@ bool SDG::SpriteAtlas::LoadSprites(const std::string &spriteConfigPath)
             for (auto &r : reel_info) {
                 int frame_index = r.second.as<int>() - 1;
 
-                if (frame_index < 0 || frame_index >= frames.size()) {
+                if (frame_index < 0 || frame_index >= (int)frames.size()) {
                     throw std::runtime_error("Reel frame index " + std::to_string(frame_index) +
                                              " out of range in sprite file \"" + spriteConfigPath + "\", sprite index: "
                                              + std::to_string(r.first.as<int>()) + ". Add +1 for Lua indices.");

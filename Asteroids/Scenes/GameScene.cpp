@@ -14,7 +14,8 @@ void GameScene::LoadContent()
     if (!GetFirstEntityWithTag("Ship"))
     {
         SDG_LOG("Creating Ship");
-        CreateEntity(Ship::MakeShip);
+        CreateEntity(Ship::MakeShip,
+                     Vector2(GetCamera()->GetWorldBounds().w/2, GetCamera()->GetWorldBounds().h/2));
     }
     else
     {

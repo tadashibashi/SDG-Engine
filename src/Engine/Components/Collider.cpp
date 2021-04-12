@@ -11,12 +11,12 @@ namespace SDG
     void Collider2D::Init()
     {
         body_ = GetComponent<Body>();
-        GetCurrentScene()->GetCollisions()->RegisterCollider(this);
+        GetScene()->GetCollisions()->RegisterCollider(this);
     }
 
     void Collider2D::Close()
     {
-        GetCurrentScene()->GetCollisions()->UnregisterCollider(this);
+        GetScene()->GetCollisions()->UnregisterCollider(this);
     }
 
     void Collider2D::Draw()

@@ -10,7 +10,7 @@
 
 namespace SDG
 {
-    class SDG_API AtlasCache {
+    class  AtlasCache {
     public:
         explicit AtlasCache(ContentMgr &contentMgr);
         ~AtlasCache();

@@ -6,7 +6,7 @@
 namespace SDG
 {
     template <typename T> requires std::is_arithmetic_v<T>
-    class SDG_API Vec3_
+    class  Vec3_
     {
     public:
         Vec3_() : x(0), y(0), z(0) { }

@@ -3,23 +3,24 @@
  * 
  * 
  * ===========================================================================*/
-#include "GraphicsDeviceMgr.h"
+#include "GraphicsDeviceMgr_GL.h"
 #include <SDL.h>
-#include <Engine/GL.h>
 #include <iostream>
 
 namespace SDG
 {
-    GraphicsDeviceMgr::GraphicsDeviceMgr() : current(new GraphicsDevice)
+    GraphicsDeviceMgr_GL::GraphicsDeviceMgr_GL() : GraphicsDeviceMgr()
     {
+        current = new GraphicsDevice_GL;
     }
 
-    GraphicsDeviceMgr::~GraphicsDeviceMgr()
+    GraphicsDeviceMgr_GL::~GraphicsDeviceMgr_GL()
     {
         delete current;
     }
 
-    void GraphicsDeviceMgr::Init(const char *title, int x, int y, int width, int height, unsigned int flags)
+    void
+    GraphicsDeviceMgr_GL::Init(const char *title, int x, int y, int width, int height, unsigned int flags)
     {
         // ============ SDL ===========
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
@@ -29,16 +30,15 @@ namespace SDG
 
         // ============ Set GL Attributes (before window creation) ============
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-#if defined(__ANDROID__) || defined(__EMSCRIPTEN__)
+#if defined(SDG_PLATFORM_ANDROID) || defined(SDG_PLATFORM_EMSCRIPTEN)
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-#else
+#elif defined(SDG_PLATFORM_WINDOWS)
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
-
         // Create GL Window
         current->Init(title, x, y, width, height, flags);
 
@@ -49,7 +49,7 @@ namespace SDG
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-#if !defined(__EMSCRIPTEN__)
+#if !defined(SDG_PLATFORM_EMSCRIPTEN)
         // ============ Initialize GLEW =============
         glewExperimental = GL_TRUE;
         GLenum result = glewInit();
@@ -64,7 +64,7 @@ namespace SDG
         current->InitShader();
     }
     
-    void GraphicsDeviceMgr::SetSwapInterval(SwapInterval interval)
+    void GraphicsDeviceMgr_GL::SetSwapInterval(SwapInterval interval)
     {
         if (interval == SwapInterval::Immediate) 
         {
@@ -80,7 +80,7 @@ namespace SDG
         } 
     }
 
-    SwapInterval GraphicsDeviceMgr::GetSwapInterval() const
+    SwapInterval GraphicsDeviceMgr_GL::GetSwapInterval() const
     {
         return SDL_GL_GetSwapInterval() == 0
             ? SwapInterval::Immediate

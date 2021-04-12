@@ -4,7 +4,6 @@
  * 
  * ===========================================================================*/
 #pragma once
-#include <Engine/Core.h>
 #include <stack>
 #include "Scene.h"
 
@@ -12,7 +11,7 @@ namespace SDG
 {
     class Scene;
 
-    class SDG_API SceneRunner {
+    class SceneRunner {
         friend class SceneMgr;
     public:
         SceneRunner();
@@ -42,7 +41,6 @@ namespace SDG
         bool isStarting_;
         Scene *newScene_;
     };
-
 }
 
 

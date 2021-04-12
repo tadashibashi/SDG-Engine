@@ -12,7 +12,7 @@
 
 namespace SDG
 {
-    class SDG_API Keyboard {
+    class  Keyboard {
         friend class InputMgr;
     public:
         Keyboard();

@@ -14,25 +14,22 @@ namespace SDG
         Vsync
     };
 
-    class SDG_API GraphicsDeviceMgr {
+    class GraphicsDeviceMgr {
     public:
-        GraphicsDeviceMgr();
-        ~GraphicsDeviceMgr();
+        GraphicsDeviceMgr() : current{} {}
+        virtual ~GraphicsDeviceMgr() = default;
 
         // No copying.
         GraphicsDeviceMgr(const GraphicsDeviceMgr &) = delete;
         GraphicsDeviceMgr &operator=(const GraphicsDeviceMgr &) = delete;
 
-        void Init(const char *title, int x, int y, int width, int height, unsigned int flags);
-        void SetSwapInterval(SwapInterval interval);
-        [[nodiscard]] SwapInterval GetSwapInterval() const;
+        virtual void Init(const char *title, int x, int y, int width, int height, unsigned int flags) = 0;
+        virtual void SetSwapInterval(SwapInterval interval) = 0;
+        [[nodiscard]]
+        virtual SwapInterval GetSwapInterval() const = 0;
 
         GraphicsDevice &GetCurrentDevice() { return *current; }
-    private:
+    protected:
         GraphicsDevice *current;
     };
-
 }
-
-
-

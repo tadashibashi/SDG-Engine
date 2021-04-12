@@ -35,7 +35,7 @@ namespace SDG
         if (show)
         {
             FRectangle rect(position.x, position.y, size.w, size.h);
-            GetSpriteBatch()->DrawRectangle(rect, Color(127, 255, 127, 80));
+            GetSpriteBatch()->DrawRectangle(rect, Color(127, 255, 127, 80), 0);
         }
     }
 

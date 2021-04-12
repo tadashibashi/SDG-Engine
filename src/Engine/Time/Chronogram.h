@@ -12,7 +12,7 @@ namespace SDG
 {
     class GameTime;
 
-    class SDG_API Chronogram: public Component {
+    class  Chronogram: public Component {
     public:
         explicit Chronogram():
             Component(false, false),

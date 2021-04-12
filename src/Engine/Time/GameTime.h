@@ -8,7 +8,7 @@
 
 namespace SDG
 {
-    class SDG_API GameTime {
+    class  GameTime {
     public:
         explicit GameTime(unsigned long startingTicks = 0);
         ~GameTime();

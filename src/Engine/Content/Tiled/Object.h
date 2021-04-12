@@ -17,7 +17,7 @@ namespace tinyxml2
 
 namespace SDG::Tiled
 {
-    struct SDG_API Object
+    struct  Object
     {
         int id;
         std::string name;

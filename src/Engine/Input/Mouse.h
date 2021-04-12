@@ -13,7 +13,7 @@
 
 namespace SDG
 {
-    class SDG_API Mouse {
+    class  Mouse {
         friend class InputMgr;
     public:
         Mouse();
