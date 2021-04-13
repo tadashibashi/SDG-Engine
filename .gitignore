@@ -1,5 +1,6 @@
 # IDE Directories
 .vs/
+.vscode/
 .idea/
 CMakeSettings.json
 
@@ -11,5 +12,4 @@ cmake-build-*/
 # Vendor Libraries
 src/*
 !src/Engine/
-!src/tinyxml2/
-
+!src/lua/CMakeLists.txt
