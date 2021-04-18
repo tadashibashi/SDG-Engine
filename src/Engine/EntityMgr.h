@@ -8,10 +8,10 @@
 #include <Engine/Core.h>
 #include <Engine/Templates/Pool.h>
 
-#include <vector>
+#include <functional>
 #include <map>
 #include <string>
-#include <functional>
+#include <vector>
 
 namespace SDG
 {
@@ -37,6 +37,7 @@ namespace SDG
             this->ProcessCreations();
         }
 
+        // Updates all active entities.
         void Update()
         {
             ProcessChanges();

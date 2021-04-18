@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:71daa66014b4311f83bba051df996282:5245a8ff8ef201f2275af91e97ff26da:9851764eab5b13b3a288c2203a1a1008$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+with polygon mode enabled:
+vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
+verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
+triangles  => sprite triangulation, 3 vertex indices per triangle
+-->
+<TextureAtlas imagePath="MainAtlas.png" width="64" height="128">
+    <sprite n="asteroid_large1" x="1" y="1" w="32" h="32" pX="0.5" pY="0.5"/>
+    <sprite n="asteroid_large2" x="1" y="35" w="31" h="32" pX="0.5" pY="0.5" oX="0" oY="0" oW="32" oH="32"/>
+    <sprite n="asteroid_large3" x="1" y="69" w="31" h="32" pX="0.5" pY="0.5" oX="0" oY="0" oW="32" oH="32"/>
+    <sprite n="asteroid_med1" x="34" y="45" w="16" h="19" pX="0.5" pY="0.5" oX="8" oY="6" oW="32" oH="32"/>
+    <sprite n="asteroid_med2" x="35" y="1" w="20" h="20" pX="0.5" pY="0.5" oX="6" oY="6" oW="32" oH="32"/>
+    <sprite n="asteroid_med3" x="35" y="23" w="18" h="20" pX="0.5" pY="0.5" oX="6" oY="7" oW="32" oH="32"/>
+    <sprite n="asteroid_small1" x="34" y="66" w="10" h="10" pX="0.5" pY="0.5" oX="11" oY="11" oW="32" oH="32"/>
+    <sprite n="asteroid_small2" x="52" y="45" w="11" h="13" pX="0.5" pY="0.5" oX="10" oY="9" oW="32" oH="32"/>
+    <sprite n="asteroid_small3" x="52" y="60" w="10" h="12" pX="0.5" pY="0.5" oX="11" oY="10" oW="32" oH="32"/>
+    <sprite n="ship" x="55" y="23" w="8" h="8" pX="0.25" pY="0.5"/>
+</TextureAtlas>

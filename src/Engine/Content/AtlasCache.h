@@ -15,7 +15,7 @@ namespace SDG
         explicit AtlasCache(ContentMgr &contentMgr);
         ~AtlasCache();
 
-        SpriteAtlas *Load(const std::string &imagePath);
+        SpriteAtlas *Load(const std::string &atlasPath);
 
         // Gets a Sprite from the current SpriteAtlas.
         // Current SpriteAtlas is determined by either the latest successful call

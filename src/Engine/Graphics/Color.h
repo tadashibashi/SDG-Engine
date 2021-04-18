@@ -25,7 +25,7 @@ namespace SDG
 
         Color() : r{}, g{}, b{}, a{} { }
 
-        explicit Color(int rgbaHex) : r(), g(), b(), a()
+        explicit Color(uint rgbaHex) : r(), g(), b(), a()
         {
             a = rgbaHex % 256;
             rgbaHex /= 256;

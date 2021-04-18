@@ -32,7 +32,7 @@
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>corona-imagesheet</string>
+        <string>xml</string>
         <key>textureFileName</key>
         <filename></filename>
         <key>flipPVR</key>
@@ -78,7 +78,7 @@
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
-        <string>C:/Users/aishi/OneDrive/Work/ONHOLD/C++/Engine/Asteroids/assets/atlas/MainAtlas.png</string>
+        <string></string>
         <key>atfFormats</key>
         <string></string>
         <key>textureFormat</key>
@@ -95,9 +95,9 @@
         <key>fixedTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>256</int>
+            <int>-1</int>
             <key>height</key>
-            <int>256</int>
+            <int>-1</int>
         </QSize>
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
@@ -108,7 +108,7 @@
             <key>sizeConstraints</key>
             <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
             <key>forceSquared</key>
-            <true/>
+            <false/>
             <key>maxRects</key>
             <struct type="AlgorithmMaxRectsSettings">
                 <key>heuristic</key>
@@ -129,10 +129,10 @@
         </struct>
         <key>dataFileNames</key>
         <map type="GFileNameMap">
-            <key>lua</key>
+            <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../atlas/MainAtlas.lua</filename>
+                <filename>MainAtlas.xml</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -163,7 +163,7 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>0</uint>
+            <uint>1</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
@@ -177,19 +177,19 @@
             <key>defaultPivotPoint</key>
             <point_f>0.5,0.5</point_f>
             <key>writePivotPoints</key>
-            <false/>
+            <true/>
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">asteroid_large1.png</key>
-            <key type="filename">asteroid_large2.png</key>
-            <key type="filename">asteroid_large3.png</key>
-            <key type="filename">asteroid_med1.png</key>
-            <key type="filename">asteroid_med2.png</key>
-            <key type="filename">asteroid_med3.png</key>
-            <key type="filename">asteroid_small1.png</key>
-            <key type="filename">asteroid_small2.png</key>
-            <key type="filename">asteroid_small3.png</key>
+            <key type="filename">../images/asteroid_large1.png</key>
+            <key type="filename">../images/asteroid_large2.png</key>
+            <key type="filename">../images/asteroid_large3.png</key>
+            <key type="filename">../images/asteroid_med1.png</key>
+            <key type="filename">../images/asteroid_med2.png</key>
+            <key type="filename">../images/asteroid_med3.png</key>
+            <key type="filename">../images/asteroid_small1.png</key>
+            <key type="filename">../images/asteroid_small2.png</key>
+            <key type="filename">../images/asteroid_small3.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -204,10 +204,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">ship.png</key>
+            <key type="filename">../images/ship.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0.25,0.5</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -222,7 +222,7 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>.</filename>
+            <filename>../images</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
@@ -245,6 +245,17 @@
         <key>normalMapSheetFileName</key>
         <filename></filename>
         <key>exporterProperties</key>
-        <map type="ExporterProperties"/>
+        <map type="ExporterProperties">
+            <key>plain::bool-property</key>
+            <struct type="ExporterProperty">
+                <key>value</key>
+                <string>false</string>
+            </struct>
+            <key>plain::string-property</key>
+            <struct type="ExporterProperty">
+                <key>value</key>
+                <string>hello world</string>
+            </struct>
+        </map>
     </struct>
 </data>

@@ -42,9 +42,9 @@ namespace SDG
             str.erase(0, 1);
     }
 
-    SpriteAtlas *ContentMgr::LoadAtlas(const std::string& imageFilePath)
+    SpriteAtlas *ContentMgr::LoadAtlas(const std::string& atlasPath)
     {
-        return atlasses_->Load(imageFilePath);
+        return atlasses_->Load(atlasPath);
     }
 
     void ContentMgr::UnloadTexture(std::string filepath)

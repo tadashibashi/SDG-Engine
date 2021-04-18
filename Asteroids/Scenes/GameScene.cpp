@@ -7,7 +7,7 @@
 
 void GameScene::LoadContent()
 {
-    GetContent()->LoadAtlas("assets/atlas/MainAtlas.png");
+    GetContent()->LoadAtlas("assets/atlas/MainAtlas.xml");
     GetCamera()->SetScale(2.f);
     GetCamera()->SetPosition(GetCamera()->GetWorldBounds().w/2, GetCamera()->GetWorldBounds().h/2);
 

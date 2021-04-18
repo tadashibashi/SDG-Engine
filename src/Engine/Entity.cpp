@@ -33,6 +33,13 @@ namespace SDG
         components_->entity_ = this;
     }
 
+    // Called after factory creation
+    void Entity::InitComponents()
+    {
+        components_->InitAll();
+        wasInit_ = true;
+    }
+
     void Entity::Swap(Entity &other)
     {
         std::swap(this->toDestroy_, other.toDestroy_);

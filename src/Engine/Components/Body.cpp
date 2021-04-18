@@ -16,12 +16,25 @@ namespace SDG
             const Sprite *s;
             if ((s = spr->GetSprite()))
             {
+                const Frame &f = spr->GetCurrentFrame();
                 Rectangle maskRect = s->GetMask();
                 size.w = (float)maskRect.w;
                 size.h = (float)maskRect.h;
 
-                x -= s->GetOffset().x * (float)spr->GetCurrentFrame().ow - maskRect.x;
-                y -= s->GetOffset().y * (float)spr->GetCurrentFrame().oh - maskRect.y;
+                float pivX, pivY;
+                if (f.hasPivot)
+                {
+                    pivX = f.pivX;
+                    pivY = f.pivY;
+                }
+                else
+                {
+                    pivX = s->GetOffset().x;
+                    pivY = s->GetOffset().y;
+                }
+
+                x -= pivX * (float)f.ow - (float)maskRect.x;
+                y -= pivY * (float)f.oh - (float)maskRect.y;
             }
         }
 

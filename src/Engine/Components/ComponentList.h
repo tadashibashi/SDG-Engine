@@ -35,7 +35,9 @@ namespace SDG
 
             T *component = new T(std::forward<TArgs>(args)...);
             component->owner_ = this;
-            component->Init();
+
+            if (GetEntity() && GetEntityWasInit())
+                component->Init();
 
             if (component->IsUpdatable())
                 updatable_.emplace_back(component);
@@ -114,17 +116,16 @@ namespace SDG
         void Draw();
 
         // Gets the number of components in this container.
-        [[nodiscard]] size_t GetLength() const
-        {
-            return map_.size();
-        }
+        [[nodiscard]]
+        size_t GetLength() const { return map_.size(); }
 
         void Close();
 
-        [[nodiscard]] Entity *GetEntity()
-        {
-            return entity_;
-        }
+        [[nodiscard]]
+        Entity *GetEntity() { return entity_; }
+
+        [[nodiscard]]
+        bool GetEntityWasInit() const;
 
     private:
         std::vector<Component *> updatable_;

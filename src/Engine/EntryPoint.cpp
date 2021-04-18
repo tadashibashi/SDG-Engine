@@ -4,9 +4,8 @@
  * 
  * ===========================================================================*/
 #include <Engine/Game.h>
-#include <Engine/Log.h>
 
-#if defined (SDG_PLATFORM_WINDOWS)
+#if defined (SDG_PLATFORM_WINDOWS) || defined(SDG_PLATFORM_APPLE) || defined(SDG_PLATFORM_ANDROID)
     int main(int argc, char *argv[])
     {
 #if defined(_DEBUG)

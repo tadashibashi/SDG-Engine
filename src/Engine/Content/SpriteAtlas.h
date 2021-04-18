@@ -31,6 +31,10 @@ namespace SDG
 
         void Close();
     private:
+        //bool LoadFromTexturePackerCoronaSDKLua(const std::string &atlas_path, Texture2D texture);
+        bool LoadFromTexturePackerGenericXML(const std::string &atlas_path, Texture2D texture);
+        //bool LoadSpritesFromLua(const std::string &spriteConfigPath);
+        bool LoadSpritesFromXML(const std::string &spriteConfigPath);
         ContentMgr &content_;
 
         std::map<std::string, Frame> frames_;

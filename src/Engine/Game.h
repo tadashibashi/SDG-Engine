@@ -22,7 +22,7 @@ namespace SDG
 
     class Game {
     public:
-        explicit Game(const std::string &configPath);
+        //explicit Game(const std::string &configPath);
         Game(const std::string &title, int x, int y, int width, int height, unsigned int windowFlags = 0, unsigned long startingTime = 0);
         ~Game();
         void Run();

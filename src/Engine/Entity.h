@@ -20,7 +20,7 @@ namespace SDG
         ~Entity();
 
         void Init();
-
+        void InitComponents();
         void Update()
         {
             components_->Update();
@@ -46,6 +46,7 @@ namespace SDG
         void Close()
         {
             RefreshEntity();
+            wasInit_ = false;
         }
 
         void RefreshEntity()
@@ -71,6 +72,9 @@ namespace SDG
             isPersistent_ = isPersistent;
         }
 
+        [[nodiscard]]
+        bool WasInitialized() const { return wasInit_; }
+
         // Accesses this entity's ComponentList
         ComponentList *Components() { return components_; }
 
@@ -82,5 +86,6 @@ namespace SDG
         std::string tag_;
         bool toDestroy_{false};
         bool isPersistent_{false};
+        bool wasInit_{false};
     };
 }

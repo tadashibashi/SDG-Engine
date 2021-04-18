@@ -12,7 +12,7 @@ namespace SDG
     class Sprite {
     public:
         Sprite() : baseSpeed(1.f), mask() {}
-        Sprite(std::vector<Frame> frames, std::vector<int> reel,
+        Sprite(std::string key, std::vector<Frame> frames, std::vector<int> reel,
                Rectangle mask, Vector2 offset, float base_speed);
 
         Sprite(const Sprite &other);
@@ -53,12 +53,14 @@ namespace SDG
         // Checks if there is a collision rect associated with this Sprite.
         [[nodiscard]] bool HasMask() const { return !mask.IsEmpty(); }
 
+        void Log() const;
     private:
         std::vector<Frame> frames;
         std::vector<int> reel;
         float baseSpeed;
         Rectangle mask; // Intended collision mask box.
         Vector2 offset;
+        std::string key;
     };
 }
 

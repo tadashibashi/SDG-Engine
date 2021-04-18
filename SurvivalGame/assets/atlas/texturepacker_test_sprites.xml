@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sprites>
+	<sprite key="rob-idle" base_speed="4">
+		<reel type="array">
+			<value>1</value> <!-- 1-based indexing -->
+			<value>2</value>
+			<value>3</value>
+			<value>4</value>
+		</reel>
+		<frames type="array">
+			<value>rob/1</value>
+			<value>rob/2</value>
+			<value>rob/3</value>
+			<value>rob/4</value>
+		</frames>
+		<mask x="8" y="16" w="16" h="16"/>
+	</sprite>	
+
+	<sprite key="guy-idle" base_speed="4">
+		<reel type="array">
+			<value>1</value> <!-- 1-based indexing -->
+			<value>2</value>
+			<value>3</value>
+			<value>4</value>
+		</reel>
+		<frames type="array">
+			<value>guy/1</value>
+			<value>guy/2</value>
+			<value>guy/3</value>
+			<value>guy/4</value>
+		</frames>
+		<mask x="12" y="20" w="10" h="10"/>
+	</sprite>	
+
+	<sprite key="guy-hurt" base_speed="4">
+		<reel type="array">
+			<value>1</value> <!-- 1-based indexing -->
+		</reel>
+		<frames type="array">
+			<value>guy/5</value>
+		</frames>
+		<mask x="12" y="20" w="10" h="10"/>
+	</sprite>	
+
+	<sprite key="compy-idle" base_speed="6">
+		<reel type="array">
+			<value>1</value> <!-- 1-based indexing -->
+			<value>2</value>
+			<value>3</value>
+			<value>4</value>
+			<value>5</value>
+		</reel>
+		<frames type="array">
+			<value>compy/1</value>
+			<value>compy/2</value>
+			<value>compy/3</value>
+			<value>compy/4</value>
+			<value>compy/5</value>
+		</frames>
+		<mask x="12" y="20" w="10" h="10"/>
+	</sprite>	
+
+	
+
+</sprites>

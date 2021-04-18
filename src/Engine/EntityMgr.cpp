@@ -35,6 +35,7 @@ namespace SDG
 
         // Perform "construction"
         factory(*entity);
+        entity->InitComponents();
 
         toAdd_.emplace_back(entity);
 

@@ -28,10 +28,11 @@ void Ship::CreateBullet()
 {
     if (bulletTimer_ == 0)
     {
-        auto &e = GetScene()->CreateEntity(Bullet::MakeBullet);
-        e.Components()->Get<Body>()->velocity = Math::Trajectory(spr->rotation, 1.f) * 8.f;
         auto bulletPos =  GetComponent<Transform>()->GetPosition();
         bulletPos.y -= 1;
+        auto &e = GetScene()->CreateEntity(Bullet::MakeBullet, bulletPos);
+        e.Components()->Get<Body>()->velocity = Math::Trajectory(spr->rotation, 1.f) * 8.f;
+
         e.Components()->Get<Transform>()->position = bulletPos;
 
         bulletTimer_ = bulletTimerMax_;

@@ -110,8 +110,13 @@ namespace SDG
     {
         for (auto &[k, v] : map_)
         {
-            v->Init();
+            v->DoInit();
         }
+    }
+
+    bool ComponentList::GetEntityWasInit() const
+    {
+        return entity_->WasInitialized();
     }
 
 

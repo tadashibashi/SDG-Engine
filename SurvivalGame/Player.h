@@ -111,7 +111,7 @@ public:
         }
 
         spr->imageSpeed = (std::abs(xAxis) > 0 || std::abs(yAxis) > 0) ? body->velocity.Length() : 0;
-        spr->rotation = std::fmod(spr->rotation + 1, 360);
+        //spr->rotation = std::fmod(spr->rotation + 1, 360);
         Vector2 tempAxis = Vector2(xAxis, yAxis);
         if (tempAxis.Length() > 0)
             axis = tempAxis;

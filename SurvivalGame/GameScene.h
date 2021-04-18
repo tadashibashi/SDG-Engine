@@ -13,6 +13,8 @@
 #include "Player.h"
 #include <Engine/Math/Rand.h>
 #include <Engine/Components/Collider.h>
+#include <Engine/Platform.h>
+#include <Engine/Graphics/OpenGL/SpriteBatch_GL.h>
 
 using namespace SDG;
 
@@ -38,10 +40,10 @@ public:
     {
         if (!spriteBatch)
         {
-            spriteBatch = new SpriteBatch(&GetGraphicsDeviceMgr()->GetCurrentDevice());
+            spriteBatch = CreateNativeSpriteBatch(&GetGraphicsDeviceMgr()->GetCurrentDevice());
         }
 
-        GetContent()->LoadAtlas("assets/atlas/texturepacker_test.png");
+        GetContent()->LoadAtlas("assets/atlas/texturepacker_test.xml");
         GetCamera()->SetScale(4.f);
         GetCamera()->SetPosition(GetCamera()->GetWorldBounds().w/2.f, GetCamera()->GetWorldBounds().h/2.f);
 
@@ -70,7 +72,7 @@ public:
 
         UpdateCameraPosition(false);
 
-        spriteBatch->Begin(GetCamera()->GetMatrix());
+        spriteBatch->Begin(GetCamera()->GetMatrix(), SortOrder::Texture);
 
         SDG_ASSERT(!map.tileLayers.empty());
         SDG_ASSERT(!map.tileSets.empty());
@@ -148,9 +150,9 @@ public:
         if (GetInput()->GetKeyboard()->IsKeyDown(Key::S))
         {
             auto &zomb = GetScene()->CreateEntity("Zombie");
-            double x = Rand::Next(mapSize_.w);
-            double y = Rand::Next(mapSize_.h);
-            zomb.Components()->Add<Transform>(x, y, 1.f, 1.f);
+            double x = Rand::Next((float)mapSize_.w);
+            double y = Rand::Next((float)mapSize_.h);
+            zomb.Components()->Add<Transform>((float)x, (float)y, 1.f, 1.f);
             zomb.Components()->Add<SpriteRenderer>();
             zomb.Components()->Add<Body>();
             zomb.Components()->Add<Collider2D>();

@@ -26,8 +26,8 @@ Modified By: Benjamin Arnold
 
 #pragma once
 
-#ifndef SpriteFont_h__
-#define SpriteFont_h__
+#ifndef SpriteFont_h_
+#define SpriteFont_h_
 
 #include <SDL_ttf.h>
 #include <glm/glm.hpp>
@@ -48,8 +48,8 @@ namespace SDG {
         glm::vec2 size;
     };
 
-#define FIRST_PRINTABLE_CHAR ((char)32)
-#define LAST_PRINTABLE_CHAR ((char)126)
+const char FIRST_PRINTABLE_CHAR = ((char)32);
+const char LAST_PRINTABLE_CHAR = ((char)126);
 
     /// For text justification
     enum class Justification {
@@ -61,8 +61,8 @@ namespace SDG {
         SpriteFont() = default;
         SpriteFont(const char* font, int size, char cs, char ce);
         SpriteFont(const char* font, int size) :
-                SpriteFont(font, size, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR) {
-        }
+                SpriteFont(font, size, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR)
+        {}
 
         void init(const char* font, int size);
         void init(const char* font, int size, char cs, char ce);
@@ -81,7 +81,7 @@ namespace SDG {
         void draw(SpriteBatch& batch, const char* s, glm::vec2 position, glm::vec2 scaling,
                   float depth, Color tint, Justification just = Justification::LEFT);
     private:
-        static std::vector<int>* createRows(glm::ivec4* rects, int rectsLength, int r, int padding, int& w);
+        static std::vector<int> *createRows(glm::ivec4* rects, int rectsLength, int r, int padding, int& w);
 
         int _regStart, _regLength;
         CharGlyph* _glyphs;
@@ -90,4 +90,4 @@ namespace SDG {
         unsigned int _texID;
     };
 }
-#endif // SpriteFont_h__
+#endif // SpriteFont_h_

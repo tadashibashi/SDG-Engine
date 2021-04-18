@@ -28,7 +28,7 @@ namespace SDG
         Sprite *GetSprite(std::string key);
 
         // Loads a SpriteAtlas.
-        SpriteAtlas *LoadAtlas(const std::string& imageFilePath);
+        SpriteAtlas *LoadAtlas(const std::string& atlasPath);
 
         // Changes the current atlas GetSprite will retrieve from
         // until the next call to this function is made or a call to

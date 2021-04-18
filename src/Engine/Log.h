@@ -15,11 +15,12 @@ namespace SDG
     class Log {
     public:
         static void Init();
-        static std::shared_ptr<spdlog::logger> &GetClientLogger() { return s_clientLogger; }
-        static std::shared_ptr<spdlog::logger> &GetCoreLogger() { return s_coreLogger; }
+
+        static spdlog::logger *GetClientLogger() { return s_clientLogger; }
+        static spdlog::logger *GetCoreLogger() { return s_coreLogger; }
     private:
-        static std::shared_ptr<spdlog::logger> s_clientLogger;
-        static std::shared_ptr<spdlog::logger> s_coreLogger;
+        static spdlog::logger *s_clientLogger;
+        static spdlog::logger *s_coreLogger;
     };
 }
 
@@ -39,6 +40,7 @@ static std::ostream &LogStream(std::ostream &os, bool log_endline,
         os << '\n';
     return os;
 }
+
 
 //namespace SDG
 //{

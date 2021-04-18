@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sprites>
+	<sprite key="ship" base_speed="0">
+		<reel type="array">
+			<value>1</value> <!-- 1-based indexing -->
+		</reel>
+		<frames type="array">
+			<value>ship</value>
+		</frames>
+		<mask x="1" y="2" w="4" h="4"/>
+	</sprite>
+
+	<sprite key="asteroid-small" base_speed="0">
+		<reel type="array">
+			<value>1</value> <!-- 1-based indexing -->
+			<value>2</value>
+			<value>3</value>
+		</reel>
+		<frames type="array">
+			<value>asteroid_small1</value>
+			<value>asteroid_small2</value>
+			<value>asteroid_small3</value>
+		</frames>
+		<mask x="12" y="12" w="8" h="8"/>
+	</sprite>	
+
+	<sprite key="asteroid-med" base_speed="0">
+		<reel type="array">
+			<value>1</value> <!-- 1-based indexing -->
+			<value>2</value>
+			<value>3</value>
+		</reel>
+		<frames type="array">
+			<value>asteroid_med1</value>
+			<value>asteroid_med2</value>
+			<value>asteroid_med3</value>
+		</frames>
+		<mask x="8" y="8" w="16" h="16"/>
+	</sprite>	
+
+	<sprite key="asteroid-large" base_speed="0">
+		<reel type="array">
+			<value>1</value> <!-- 1-based indexing -->
+			<value>2</value>
+			<value>3</value>
+		</reel>
+		<frames type="array">
+			<value>asteroid_large1</value>
+			<value>asteroid_large2</value>
+			<value>asteroid_large3</value>
+		</frames>
+		<mask x="8" y="8" w="24" h="24"/>
+	</sprite>
+
+</sprites>

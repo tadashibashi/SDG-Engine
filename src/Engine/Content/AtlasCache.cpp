@@ -1,6 +1,7 @@
 #include <Engine/Log.h>
 #include "AtlasCache.h"
 #include <cassert>
+#include <tinyxml2/tinyxml2.h>
 
 namespace SDG
 {
@@ -25,23 +26,66 @@ namespace SDG
     // ========================================================================
     // Load
     // ========================================================================
-    SpriteAtlas *AtlasCache::Load(const std::string &imagePath)
+    SpriteAtlas *AtlasCache::Load(const std::string &atlasPath)
     {
-        if (cache_.contains(imagePath))     // Cache already contains this path return it.
+        if (cache_.contains(atlasPath))     // Cache already contains this path return it.
         {
-            ChangeCurrentAtlas(imagePath);
-            return cache_[imagePath];
+            ChangeCurrentAtlas(atlasPath);
+            return cache_[atlasPath];
         }
         else                                // Cache does not contain this path, load it.
         {
             auto *atlas = new SpriteAtlas(content_);
 
-            std::string atlasPath = imagePath.substr(0, imagePath.find_first_of('.')) + ".lua";
+            std::string imagePath, spriteConfigPath;
+            if (atlasPath.ends_with(".lua")) // assume .png of the same name
+            {
+                std::string stub = atlasPath.substr(0, atlasPath.find_first_of('.'));
+                imagePath = stub + ".png";
+                spriteConfigPath = stub + "_sprites.lua";
+            }
+            else if (atlasPath.ends_with(".xml"))
+            {
+                std::string stub = atlasPath.substr(0, atlasPath.find_first_of('.'));
 
-            std::string spriteConfigPath = imagePath.substr(0, imagePath.find_first_of('.')) + "_sprites.lua";
+                tinyxml2::XMLDocument doc;
+                tinyxml2::XMLError result = doc.LoadFile(atlasPath.c_str());
+                if (result != tinyxml2::XML_SUCCESS)
+                {
+                    delete atlas;
+                    SDG_CORE_ERR("AtlasCache::Load failed to open xml file \"{0}\"", atlasPath);
+                    return nullptr;
+                }
+
+                tinyxml2::XMLElement *atlasElement = doc.FirstChildElement("TextureAtlas");
+                if (!atlasElement)
+                {
+                    delete atlas;
+                    SDG_CORE_ERR("AtlasCache::Load failed to get the TextureAtlas element in file \"{0}\". "
+                                 "This is most likely an invalid TexturePacker generic xml file.", atlasPath);
+                    return nullptr;
+                }
+
+                auto *imagePathAttribute = atlasElement->FindAttribute("imagePath");
+                if (!imagePathAttribute)
+                {
+                    delete atlas;
+                    SDG_CORE_ERR("SDG::AtlasCache::Load failed to get the TextureAtlas element attribute \"imagePath\" "
+                                 "in file {0}. This is most likely an invalid TexturePacker generic xml file.",
+                                 atlasPath);
+                    return nullptr;
+                }
+                imagePath = stub.substr(0, stub.find_last_of('/')) + "/" + imagePathAttribute->Value();
+                spriteConfigPath = stub + "_sprites.xml";
+            }
+            else
+            {
+                SDG_CORE_ERR("SDG::AtlasCache::Load failed with atlas path \"{0}\": file extension not supported (must be .xml or .lua)", atlasPath);
+                return nullptr;
+            }
 
             SDG_CORE_LOG("Loading atlas:\nImagePath: {0}\nAtlasPath: {1}\nSpriteConfig: {2}", imagePath, atlasPath,
-                spriteConfigPath);
+                         spriteConfigPath);
 
             // Check for errors
             if (!atlas->Load(atlasPath, imagePath))
@@ -54,13 +98,13 @@ namespace SDG
             if (!atlas->LoadSprites(spriteConfigPath))
             {
                 delete atlas;
-                SDG_ERR("Failed to load sprites from atlas with image path:", imagePath);
+                SDG_ERR("Failed to load sprites from atlas with image path:", atlasPath);
                 return nullptr;
             }
 
             // No errors, commit changes.
-            cache_[imagePath] = atlas;
-            ChangeCurrentAtlas(imagePath);
+            cache_[atlasPath] = atlas;
+            ChangeCurrentAtlas(atlasPath);
             return atlas;
         }
     }

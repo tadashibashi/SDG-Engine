@@ -13,7 +13,6 @@ public:
     Asteroids() : Game("Asteroids", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                        480, 480, 0, 0)
     {
-
     }
 
     ~Asteroids()

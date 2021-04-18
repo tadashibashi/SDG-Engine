@@ -17,13 +17,32 @@ namespace SDG
     class Component
     {
         friend class ComponentList;
-        enum : unsigned char
+        friend class Game;
+
+        // Attribute bit flags
+        enum Flags : unsigned char
         {
             Updatable   = 1u << 0u,
             Drawable    = 1u << 1u,
             Active      = 1u << 2u,
             ToBeRemoved = 1u << 3u,
+            WasInit     = 1u << 4u
         };
+
+    // ===== User-implemented Events =====
+    protected:
+        // User-implemented initialization logic. Use to connect to other components and game resources.
+        virtual void Init() { }
+        // User-implemented update logic.
+        virtual void Update() { }
+        // User-implemented postupdate logic. Occurs after Update().
+        virtual void PostUpdate() { }
+        // User-implemented rendering logic. Use the sprite batch to draw images and shapes.
+        virtual void Draw() { }
+        // User-implemented clean up logic.
+        virtual void Close() { }
+
+    // ===== Constructors =====
     public:
         Component(bool isUpdatable, bool isDrawable): attr_{}, owner_{}
         {
@@ -37,6 +56,8 @@ namespace SDG
         Component &operator=(const Component &) = delete;
         virtual ~Component() = default;
 
+    private:
+        // Functions intended for control by friend classes (e.g. class Game/ComponentList)
         // ===== Service Provider Functions =====
         static void Provide(SpriteBatch *spriteBatch) { spriteBatch_ = spriteBatch; }
         static void Provide(const GameTime *gameTime) { gameTime_ = gameTime; }
@@ -44,6 +65,23 @@ namespace SDG
         static void Provide(InputMgr *inputMgr) { inputMgr_ = inputMgr; }
         static void Provide(GraphicsDeviceMgr *graphics) { graphics_ = graphics; }
 
+        // Initializes the component only if it has not been initialized yet.
+        void DoInit()
+        {
+            if (!WasInitialized())
+            {
+                ForceInit();
+            }
+        }
+
+        // Initializes the component regardless if it had been initialized or not.
+        void ForceInit()
+        {
+            Init();
+            attr_ |= WasInit;
+        }
+
+    public:
         // ===== Attributes / Properties =====
         [[nodiscard]]
         bool IsDrawable() const  { return attr_ & Drawable; }
@@ -53,25 +91,28 @@ namespace SDG
         bool IsActive() const    { return attr_ & Active; }
         [[nodiscard]]
         bool IsRemoving() const  { return attr_ & ToBeRemoved; }
+        [[nodiscard]]
+        bool WasInitialized() const { return attr_ & WasInit; }
 
+        // Gets owning ComponentList this Component is a member of, or nullptr if there is none.
         [[nodiscard]]
         ComponentList *Owner() const { return owner_; }
+
+        // Convenience function to get owning Entity, or nullptr if there is none. Component must be in a ComponentList
+        // in order to have an owning Entity. Otherwise can be retrieved via Owner()->GetEntity();
+        [[nodiscard]]
+        Entity *GetEntity()
+        {
+            return (owner_ && owner_->GetEntity()) ? owner_->GetEntity() : nullptr;
+        }
 
         void SetActive(bool active);
         void SetRemoving(bool removing);
 
-        // ===== Events =====
-
-        virtual void Init() { }
-        virtual void Update() { }
-        virtual void PostUpdate() { }
-        virtual void Draw() { }
-        virtual void Close() { }
-
     protected:
-        // ===== Convenience Getters =====
+        // ===== Convenience Getters for Subclasses =====
 
-        // Gets a component that is exactly the same type as template arg or
+        // Gets a component from the owning ComponentList that is exactly the same type as template arg or
         // nullptr if there are none.
         template <typename T> requires std::is_base_of_v<Component, T>
         [[nodiscard]]
@@ -81,7 +122,7 @@ namespace SDG
             return Owner()->Get<T>();
         }
 
-        // Gets a component that is either the same type or a child of arg or
+        // Gets a component from the owning ComponentList that is either the same type or a child of arg or
         // nullptr if there are none.
         template <typename T> requires std::is_base_of_v<Component, T>
         [[nodiscard]]
@@ -133,19 +174,12 @@ namespace SDG
             return graphics_;
         }
 
-        [[nodiscard]]
-        Entity *GetEntity()
-        {
-            SDG_ASSERT(owner_);
-            SDG_ASSERT(owner_->GetEntity());
-            
-            return owner_->GetEntity();
-        }
-
     private:
-        unsigned char attr_;
+        // Members
+        ubyte attr_;
         ComponentList *owner_;
 
+        // Game-provided services
         static SpriteBatch *spriteBatch_;
         static const GameTime *gameTime_;
         static ContentMgr *contentMgr_;

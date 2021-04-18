@@ -3,7 +3,7 @@ project(Engine)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(src/lua)
+#add_subdirectory(src/lua)
 add_subdirectory(src/SDL)
 add_subdirectory(src/tinyxml2)
 
@@ -155,7 +155,7 @@ add_library(Engine STATIC
         src/Engine/States/StateMachine.h
         src/Engine/States/StateMachineState.h
         src/Engine/Graphics/GraphicsDeviceMgr.h
-        src/Engine/Graphics/GraphicsDevice.h src/Engine/Platform.cpp src/Engine/Platform.h src/Engine/Graphics/OpenGL/SpriteBatch_GL.cpp src/Engine/Graphics/OpenGL/SpriteBatch_GL.h src/Engine/Content/Pixel.h)
+        src/Engine/Graphics/GraphicsDevice.h src/Engine/Platform.cpp src/Engine/Platform.h src/Engine/Graphics/OpenGL/SpriteBatch_GL.cpp src/Engine/Graphics/OpenGL/SpriteBatch_GL.h src/Engine/Content/Pixel.h src/Engine/Content/Frame.cpp)
 
 target_include_directories(Engine PUBLIC
     src/
@@ -196,12 +196,12 @@ target_link_directories(Engine PUBLIC ${TARGET_LINK_DIRS} ${AUDIO_LIB_DIRS})
 
 # Engine Link Libraries
 if (EMSCRIPTEN)
-    set(LINK_LIBS tinyxml2 lua)
+    set(LINK_LIBS tinyxml2)
     set(CMAKE_CXX_FLAGS "--preload-file ./assets@assets ${CMAKE_CXX_FLAGS}")
 elseif(CMAKE_BUILD_TYPE MATCHES "Debug")
-    set(LINK_LIBS SDL2main SDL2_mixer SDL2_ttf SDL2 opengl32 glew32d zlibstaticd lua tinyxml2)
+    set(LINK_LIBS SDL2main SDL2_mixer SDL2_ttf SDL2 opengl32 glew32d zlibstaticd tinyxml2)
 else()
-    set(LINK_LIBS SDL2main SDL2_mixer SDL2_ttf SDL2 opengl32 glew32 zlibstatic lua tinyxml2)
+    set(LINK_LIBS SDL2main SDL2_mixer SDL2_ttf SDL2 opengl32 glew32 zlibstatic tinyxml2)
 endif()
 
 target_link_libraries(Engine ${LINK_LIBS} ${AUDIO_LIBS})

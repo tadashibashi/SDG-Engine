@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:64eaba371a9a59a54308a48bb47c10d8:89e0a105db1105b2ad6640789867fbe7:25f42bd4bef50ecc0c0823158d9eafd9$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+with polygon mode enabled:
+vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
+verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
+triangles  => sprite triangulation, 3 vertex indices per triangle
+-->
+<TextureAtlas imagePath="texturepacker_test.png" width="128" height="256">
+    <sprite n="balloon/1" x="2" y="2" w="28" h="14" pX="0.5" pY="1" oX="9" oY="3" oW="32" oH="32" r="y"/>
+    <sprite n="balloon/2" x="33" y="2" w="28" h="14" pX="0.5" pY="1" oX="9" oY="2" oW="32" oH="32" r="y"/>
+    <sprite n="bug/1" x="71" y="65" w="19" h="17" pX="0.5" pY="1" oX="9" oY="13" oW="32" oH="32" r="y"/>
+    <sprite n="bug/2" x="48" y="82" w="19" h="17" pX="0.5" pY="1" oX="9" oY="13" oW="32" oH="32" r="y"/>
+    <sprite n="bug/3" x="24" y="97" w="19" h="17" pX="0.5" pY="1" oX="9" oY="13" oW="32" oH="32" r="y"/>
+    <sprite n="bug/4" x="25" y="60" w="20" h="17" pX="0.5" pY="1" oX="9" oY="12" oW="32" oH="32" r="y"/>
+    <sprite n="bug/5" x="2" y="61" w="20" h="17" pX="0.5" pY="1" oX="9" oY="11" oW="32" oH="32" r="y"/>
+    <sprite n="compy/1" x="2" y="19" w="22" h="17" pX="0.5" pY="1" oX="7" oY="10" oW="32" oH="32" r="y"/>
+    <sprite n="compy/2" x="90" y="2" w="22" h="19" pX="0.5" pY="1" oX="8" oY="9" oW="32" oH="32" r="y"/>
+    <sprite n="compy/3" x="27" y="19" w="22" h="17" pX="0.5" pY="1" oX="9" oY="10" oW="32" oH="32" r="y"/>
+    <sprite n="compy/4" x="52" y="22" w="22" h="17" pX="0.5" pY="1" oX="8" oY="10" oW="32" oH="32" r="y"/>
+    <sprite n="compy/5" x="64" y="2" w="23" h="17" pX="0.5" pY="1" oX="8" oY="8" oW="32" oH="32" r="y"/>
+    <sprite n="crab/1" x="2" y="102" w="19" h="13" pX="0.5" pY="1" oX="7" oY="19" oW="32" oH="32"/>
+    <sprite n="crab/2" x="93" y="79" w="19" h="13" pX="0.5" pY="1" oX="7" oY="19" oW="32" oH="32"/>
+    <sprite n="crab/3" x="66" y="124" w="18" h="13" pX="0.5" pY="1" oX="8" oY="19" oW="32" oH="32"/>
+    <sprite n="crab/4" x="2" y="137" w="15" h="13" pX="0.5" pY="1" oX="8" oY="19" oW="32" oH="32"/>
+    <sprite n="crab/5" x="87" y="132" w="18" h="13" pX="0.5" pY="1" oX="8" oY="19" oW="32" oH="32"/>
+    <sprite n="frog/1" x="115" y="2" w="11" h="14" pX="0.5" pY="1" oX="9" oY="21" oW="32" oH="32" r="y"/>
+    <sprite n="frog/2" x="108" y="135" w="15" h="14" pX="0.5" pY="1" oX="9" oY="8" oW="32" oH="32" r="y"/>
+    <sprite n="frog/3" x="20" y="137" w="14" h="13" pX="0.5" pY="1" oX="9" oY="9" oW="32" oH="32"/>
+    <sprite n="frog/4" x="115" y="19" w="9" h="16" pX="0.5" pY="1" oX="8" oY="23" oW="32" oH="32" r="y"/>
+    <sprite n="frog/5" x="37" y="140" w="14" h="13" pX="0.5" pY="1" oX="9" oY="19" oW="32" oH="32"/>
+    <sprite n="ghost/1" x="2" y="118" w="18" h="16" pX="0.5" pY="1" oX="7" oY="9" oW="32" oH="32"/>
+    <sprite n="ghost/2" x="91" y="95" w="18" h="16" pX="0.5" pY="1" oX="7" oY="9" oW="32" oH="32"/>
+    <sprite n="ghost/3" x="67" y="106" w="18" h="15" pX="0.5" pY="1" oX="7" oY="10" oW="32" oH="32"/>
+    <sprite n="ghost/4" x="45" y="122" w="18" h="15" pX="0.5" pY="1" oX="7" oY="10" oW="32" oH="32"/>
+    <sprite n="ghost/5" x="88" y="114" w="18" h="15" pX="0.5" pY="1" oX="7" oY="8" oW="32" oH="32"/>
+    <sprite n="guy/1" x="71" y="46" w="20" h="16" pX="0.5" pY="1" oX="8" oY="12" oW="32" oH="32" r="y"/>
+    <sprite n="guy/2" x="2" y="39" w="20" h="19" pX="0.5" pY="1" oX="6" oY="11" oW="32" oH="32" r="y"/>
+    <sprite n="guy/3" x="48" y="63" w="20" h="16" pX="0.5" pY="1" oX="8" oY="12" oW="32" oH="32" r="y"/>
+    <sprite n="guy/4" x="25" y="80" w="20" h="14" pX="0.5" pY="1" oX="9" oY="11" oW="32" oH="32" r="y"/>
+    <sprite n="guy/5" x="77" y="24" w="21" h="19" pX="0.5" pY="1" oX="6" oY="10" oW="32" oH="32" r="y"/>
+    <sprite n="owl/1" x="112" y="95" w="14" h="18" pX="0.5" pY="1" oX="9" oY="14" oW="32" oH="32"/>
+    <sprite n="owl/2" x="24" y="117" w="18" h="17" pX="0.5" pY="1" oX="7" oY="7" oW="32" oH="32" r="y"/>
+    <sprite n="owl/3" x="101" y="38" w="21" h="17" pX="0.5" pY="1" oX="5" oY="7" oW="32" oH="32"/>
+    <sprite n="owl/4" x="109" y="116" w="17" h="16" pX="0.5" pY="1" oX="8" oY="6" oW="32" oH="32" r="y"/>
+    <sprite n="owl/5" x="70" y="85" w="18" h="18" pX="0.5" pY="1" oX="5" oY="13" oW="32" oH="32"/>
+    <sprite n="rob/1" x="46" y="102" w="18" h="17" pX="0.5" pY="1" oX="7" oY="15" oW="32" oH="32"/>
+    <sprite n="rob/2" x="25" y="39" w="20" h="18" pX="0.5" pY="1" oX="6" oY="14" oW="32" oH="32"/>
+    <sprite n="rob/3" x="2" y="81" w="19" h="18" pX="0.5" pY="1" oX="7" oY="14" oW="32" oH="32"/>
+    <sprite n="rob/4" x="94" y="58" w="19" h="18" pX="0.5" pY="1" oX="6" oY="14" oW="32" oH="32"/>
+    <sprite n="rob/5" x="48" y="42" w="20" h="18" pX="0.5" pY="1" oX="6" oY="12" oW="32" oH="32"/>
+</TextureAtlas>
